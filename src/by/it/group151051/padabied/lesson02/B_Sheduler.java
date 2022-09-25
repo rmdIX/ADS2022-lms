@@ -1,6 +1,7 @@
 package by.it.group151051.padabied.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 даны интервальные события events
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class B_Sheduler {
     //событие у аудитории(два поля: начало и конец)
-    static class Event {
+    static class Event implements Comparable<Event> {
         int start;
         int stop;
 
@@ -23,6 +24,16 @@ public class B_Sheduler {
         @Override
         public String toString() {
             return "("+ start +":" + stop + ")";
+        }
+
+        @Override
+        public int compareTo(Event event) {
+            if (this.start == event.start) {
+                return Integer.compare(this.stop, event.stop);
+              }
+            else {
+                return Integer.compare(this.start, event.start);
+            }
         }
     }
 
@@ -41,19 +52,27 @@ public class B_Sheduler {
     }
 
     List<Event> calcStartTimes(Event[] events, int from, int to) {
-        //events - события которые нужно распределить в аудитории
-        //в период [from, int] (включительно).
-        //оптимизация проводится по наибольшему числу непересекающихся событий.
-        //начало и конец событий могут совпадать.
-        List<Event> result;
-        result = new ArrayList<>();
-        //ваше решение.
+        List<Event> result = new ArrayList<>();
+        Arrays.sort(events);
+        Event curr = events[0];
 
+        int currStop = curr.stop;
+        int lastIndex = 0;
 
+        result.add(curr);
 
-
-
-
-        return result;                        //вернем итог
+        while (lastIndex < events.length) {
+           for (int i = 0; i < events.length; i++) {
+                if (events[i].start == currStop) {
+                    result.add(events[i]);
+                    curr = events[i];
+                    currStop = curr.stop;
+                    lastIndex = i;
+                }
+            }
+            lastIndex++;
+            currStop++;
+        }
+      return result;
     }
 }

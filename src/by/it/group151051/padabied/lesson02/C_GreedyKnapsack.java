@@ -14,16 +14,19 @@ package by.it.group151051.padabied.lesson02;
  */
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
     private static class Item implements Comparable<Item> {
         int cost;
         int weight;
+        int specific;
 
         Item(int cost, int weight) {
             this.cost = cost;
             this.weight = weight;
+            this.specific = cost/weight;
         }
 
         @Override
@@ -31,14 +34,14 @@ public class C_GreedyKnapsack {
             return "Item{" +
                     "cost=" + cost +
                     ", weight=" + weight +
+                    ", specific=" +specific +
                     '}';
         }
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
+            if (this.specific > o.specific) return -1;
+            if (this.specific < o.specific) return  1;
             return 0;
         }
     }
@@ -52,24 +55,25 @@ public class C_GreedyKnapsack {
             items[i] = new Item(input.nextInt(), input.nextInt());
         }
         //покажем предметы
+        Arrays.sort(items);
         for (Item item:items) {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n",n,W);
-
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
         double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
-        //ваше решение.
+        int currWeight = 0;
 
-
-
-
-
+        for (Item item : items) {
+            if (currWeight + item.weight <= W) {
+                currWeight += item.weight;
+                result += item.cost;
+            }
+            else {
+                int emptySpace = W - currWeight;
+                result += emptySpace*item.specific;
+                currWeight = W;
+            }
+        }
         System.out.printf("Удалось собрать рюкзак на сумму %f\n",result);
         return result;
     }
