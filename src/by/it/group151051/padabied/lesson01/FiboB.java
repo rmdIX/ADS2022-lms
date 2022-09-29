@@ -36,7 +36,6 @@ public class FiboB {
     }
 
     BigInteger fastB(Integer n) {
-        //здесь нужно реализовать вариант с временем O(n) и памятью O(n)
         if (cache[n] != null) return cache[n];
         cache[n] = fastB(n-1).add(fastB(n-2));
         return cache[n];

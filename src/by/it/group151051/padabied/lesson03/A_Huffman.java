@@ -1,160 +1,124 @@
 package by.it.group151051.padabied.lesson03;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
-
-//Lesson 3. A_Huffman.
-//Разработайте метод encode(File file) для кодирования строки (код Хаффмана)
-
-// По данным файла (непустой строке ss длины не более 104104),
-// состоящей из строчных букв латинского алфавита,
-// постройте оптимальный по суммарной длине беспрефиксный код.
-
-// Используйте Алгоритм Хаффмана — жадный алгоритм оптимального
-// безпрефиксного кодирования алфавита с минимальной избыточностью.
-
-// В первой строке выведите количество различных букв kk,
-// встречающихся в строке, и размер получившейся закодированной строки.
-// В следующих kk строках запишите коды букв в формате "letter: code".
-// В последней строке выведите закодированную строку. Примеры ниже
-
-//        Sample Input 1:
-//        a
-//
-//        Sample Output 1:
-//        1 1
-//        a: 0
-//        0
-
-//        Sample Input 2:
-//        abacabad
-//
-//        Sample Output 2:
-//        4 14
-//        a: 0
-//        b: 10
-//        c: 110
-//        d: 111
-//        01001100100111
 
 public class A_Huffman {
 
-    //Изучите классы Node InternalNode LeafNode
-    abstract class Node implements Comparable<Node> {
-        //абстрактный класс элемент дерева
-        //(сделан abstract, чтобы нельзя было использовать его напрямую)
-        //а только через его версии InternalNode и LeafNode
-        private final int frequence; //частота символов
+    public ArrayList<Node> nodeList = new ArrayList<>();
 
-        //генерация кодов (вызывается на корневом узле
-        //один раз в конце, т.е. после построения дерева)
-        abstract void fillCodes(String code);
+    public class Node implements Comparable<Node> {
+        int freq;
+        char letter;
+        Node left;
+        Node right;
+        String str;
 
-        //конструктор по умолчанию
-        private Node(int frequence) {
-            this.frequence = frequence;
-        }
 
-        //метод нужен для корректной работы узла в приоритетной очереди
-        //или для сортировок
         @Override
         public int compareTo(Node o) {
-            return Integer.compare(frequence, o.frequence);
+            if (this.freq != o.freq) return Integer.compare(freq, o.freq);
+            else return Character.compare(o.letter, this.letter);
         }
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////////
-    //расширение базового класса до внутреннего узла дерева
-    private class InternalNode extends Node {
-        //внутренный узел дерева
-        Node left;  //левый ребенок бинарного дерева
-        Node right; //правый ребенок бинарного дерева
+        public Node(char x, int freq) {
+            this.freq = freq;
+            this.letter = x;
+        }
 
-        //для этого дерева не существует внутренних узлов без обоих детей
-        //поэтому вот такого конструктора будет достаточно
-        InternalNode(Node left, Node right) {
-            super(left.frequence + right.frequence);
+        public Node(Node left, Node right) {
             this.left = left;
             this.right = right;
-        }
-
-        @Override
-        void fillCodes(String code) {
-            left.fillCodes(code + "0");
-            right.fillCodes(code + "1");
-        }
-
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////
-    //расширение базового класса до листа дерева
-    private class LeafNode extends Node {
-        //лист
-        char symbol; //символы хранятся только в листах
-
-        LeafNode(int frequence, char symbol) {
-            super(frequence);
-            this.symbol = symbol;
-        }
-
-        @Override
-        void fillCodes(String code) {
-            //добрались до листа, значит рекурсия закончена, код уже готов
-            //и можно запомнить его в индексе для поиска кода по символу.
-            codes.put(this.symbol, code);
+            this.freq = left.freq + right.freq;
+            this.str = String.valueOf(left.letter) + String.valueOf(right.letter);
         }
     }
 
-    //индекс данных из листьев
-    static private Map<Character, String> codes = new TreeMap<>();
-
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-    String encode(File file) throws FileNotFoundException {
-        //прочитаем строку для кодирования из тестового файла
-        Scanner scanner = new Scanner(file);
-        String s = scanner.next();
-
-        //все комментарии от тестового решения были оставлены т.к. это задание A.
-        //если они вам мешают их можно удалить
-
-        Map<Character, Integer> count = new HashMap<>();
-        //1. переберем все символы по очереди и рассчитаем их частоту в Map count
-            //для каждого символа добавим 1 если его в карте еще нет или инкремент если есть.
-
-        //2. перенесем все символы в приоритетную очередь в виде листьев
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
-
-        //3. вынимая по два узла из очереди (для сборки родителя)
-        //и возвращая этого родителя обратно в очередь
-        //построим дерево кодирования Хаффмана.
-        //У родителя частоты детей складываются.
-
-        //4. последний из родителей будет корнем этого дерева
-        //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
-        StringBuilder sb = new StringBuilder();
-        //.....
-
-        return sb.toString();
-        //01001100100111
-        //01001100100111
-    }
-    //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-    public static void main(String[] args) throws FileNotFoundException {
-        String root = System.getProperty("user.dir") + "/src/";
-        File f = new File(root + "by/it/a_khmelev/lesson03/dataHuffman.txt");
-        A_Huffman instance = new A_Huffman();
-        long startTime = System.currentTimeMillis();
-        String result = instance.encode(f);
-        long finishTime = System.currentTimeMillis();
-        System.out.printf("%d %d\n", codes.size(), result.length());
-        for (Map.Entry<Character, String> entry : codes.entrySet()) {
-            System.out.printf("%s: %s\n", entry.getKey(), entry.getValue());
+    public int getFreq(String str, char x) {
+        int cnt = 0;
+        for (char y : str.toCharArray()) {
+            if (y == x) cnt++;
         }
-        System.out.println(result);
+        return cnt;
     }
 
+    public String encode(File file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String str = reader.readLine();
+        for (char x : str.toCharArray()) {
+            boolean free = true;
+            for (Node node : nodeList) {
+                if (node.letter == x) {
+                    free = false;
+                    break;
+                }
+            }
+            if (free) {
+                nodeList.add(new Node(x, getFreq(str, x)));
+            }
+        }
+        Collections.sort(nodeList);
+        LinkedList<Node> linked = new LinkedList<>(nodeList);
+        Node root = null;
+
+        while (linked.peek() != null) {
+            Node first = linked.poll();
+            Node second = linked.poll();
+            if (second == null && linked.peek() != null) {
+                linked.offer(first);
+            } else if (second == null && linked.peek() == null) {
+                root = first;
+                break;
+            } else {
+                assert second != null;
+                Node newNode = new Node(second, first);
+                linked.offer(newNode);
+            }
+        }
+        Map<Character, String> code = new HashMap<>();
+
+        for (int i = 0; i < nodeList.size(); i++) {
+            char curr = nodeList.get(i).letter;
+            Node currNode = root;
+            StringBuilder resultString = new StringBuilder();
+
+            while (true) {
+                if (currNode.left.letter == curr) {
+                    resultString.append("0");
+                    code.put(curr, resultString.toString());
+                    break;
+                } else if (currNode.right.letter == curr) {
+                    resultString.append("1");
+                    code.put(curr, resultString.toString());
+                    break;
+                }
+
+                if (currNode.left.str.contains(String.valueOf(curr))) {
+                    resultString.append("0");
+                    currNode = currNode.left;
+                } else if (currNode.right.str.contains(String.valueOf(curr))) {
+                    resultString.append("1");
+                    currNode = currNode.right;
+                }
+            }
+        }
+
+        for (Map.Entry<Character, String> x : code.entrySet()) {
+            if (!x.getValue().contains(String.valueOf("1"))) code.put(x.getKey(), "0");
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (char x : str.toCharArray()) {
+            result.append(code.get(x));
+        }
+
+        System.out.println(nodeList.size() + " " +  result.toString().length() + "\n");
+
+        for (Map.Entry<Character, String> x : code.entrySet()) {
+            System.out.println(x.getKey() + ": " + x.getValue());
+        }
+
+        System.out.println("\n" + result.toString());
+        return result.toString();
+    }
 }

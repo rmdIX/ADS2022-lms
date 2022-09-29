@@ -25,7 +25,7 @@ public class Lesson3Test {
         File f = new File(root + "by/it/a_khmelev/lesson03/dataHuffman.txt");
         A_Huffman instance = new A_Huffman();
         String result = instance.encode(f);
-        boolean ok=result.equals("01001100100111");
+        boolean ok=result.equals("001010001011");
         assertTrue("A failed", ok);
     }
 

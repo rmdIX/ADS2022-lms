@@ -24,15 +24,15 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Решение сложно найти интуитивно
-        //возможно потребуется дополнительный поиск информации
-        //см. период Пизано
-        FiboB fibob = new FiboB();
-        BigInteger x = fibob.fastB(Integer.valueOf(String.valueOf(n)));
+//        FiboB fibob = new FiboB();
+//        BigInteger x = fibob.fastB(Integer.valueOf(String.valueOf(n)));
+//
+//        return x.longValue() % m;
 
-        return x.longValue()%m;
+        return (new FiboB().fastB(Integer.valueOf(String.valueOf(n))).longValue())%m;
+
+
     }
-
-
 }
+
 
