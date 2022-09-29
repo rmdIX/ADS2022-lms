@@ -31,12 +31,16 @@ public class FiboA {
         //время O(2^n)
         int f1 = 0;
         int f2 = 1;
+        int count = 0;
         int res = 0;
         for (int i=2; i<=n; i++){
             res = f1 + f2;
             f1 = f2;
             f2 = res;
+            count++;
         }
+        System.out.println("Number of iterations: " + count);
+        System.out.println("Time: O(n)");
         return res;
     }
 
@@ -46,9 +50,14 @@ public class FiboA {
         //здесь нужно реализовать вариант без ограничения на размер числа,
         //в котором код совпадает с мат.определением чисел Фибоначчи
         //время O(2^n)
+        int count = 0;
         if (n==1 || n==2){
+            count++;
             return BigInteger.ONE;
         }
+        //System.out.println("Number of iterations: " + count);
+        //System.out.println("Time: O(n)");
+        count++;
         return slowA(n-1).add(slowA(n-2));
     }
 
