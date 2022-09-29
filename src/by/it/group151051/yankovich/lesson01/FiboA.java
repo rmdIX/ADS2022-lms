@@ -49,7 +49,7 @@ public class FiboA {
         if (n==1 || n==2){
             return BigInteger.ONE;
         }
-        return slowA(n-1) + slowA(n-2);
+        return slowA(n-1).add(slowA(n-2));
     }
 
 
