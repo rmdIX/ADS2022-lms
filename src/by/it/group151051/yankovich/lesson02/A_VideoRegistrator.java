@@ -31,7 +31,15 @@ public class A_VideoRegistrator {
             System.out.print(item + " ");
         }
         System.out.println();
-        //int i=0;
+        for (int i=0; i<events.length; i++){
+            double start = events[i];
+            double end = start + 1;
+            result.add(start);
+            while (i<events.length-1 && events[i+1] <= end){
+                i++;
+            }
+        }
+
         //i - это индекс события events[i]
         //комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
         //Подготовка к жадному поглощению массива событий
