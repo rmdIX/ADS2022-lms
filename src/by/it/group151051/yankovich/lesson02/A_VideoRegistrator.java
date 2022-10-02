@@ -26,11 +26,11 @@ public class A_VideoRegistrator {
         List<Double> result;
         result = new ArrayList<>();
         Arrays.sort(events);
-        for (double item:
-             events) {
-            System.out.print(item + " ");
-        }
-        System.out.println();
+//        for (double item:
+//             events) {
+//            System.out.print(item + " ");
+//        }
+//        System.out.println();
         for (int i=0; i<events.length; i++){
             double start = events[i];
             double end = start + 1;
