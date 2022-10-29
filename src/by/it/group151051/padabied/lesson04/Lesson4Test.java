@@ -11,8 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class Lesson4Test {
     @Test
     public void A() throws Exception {
-        String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelov/lesson04/dataA.txt");
+        InputStream stream = new FileInputStream("src/by/it/group151051/padabied/lesson04/dataA.txt");
         A_BinaryFind instance = new A_BinaryFind();
         //long startTime = System.currentTimeMillis();
         int[] result=instance.findIndex(stream);

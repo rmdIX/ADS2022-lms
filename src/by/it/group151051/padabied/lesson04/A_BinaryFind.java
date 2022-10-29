@@ -1,8 +1,12 @@
 package by.it.group151051.padabied.lesson04;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
+
+import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 /*
@@ -27,39 +31,41 @@ import java.util.Scanner;
 */
 
 public class A_BinaryFind {
-    int[] findIndex(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
-        Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-        //размер отсортированного массива
-        int n = scanner.nextInt();
-        //сам отсортированный массива
-        int[] a=new int[n];
-        for (int i = 1; i <= n; i++) {
-            a[i-1] = scanner.nextInt();
+    int[] findIndex(InputStream stream) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String first = reader.readLine();
+        String second = reader.readLine();
+        String[] tokensFirst = first.split(" ");
+        String[] tokensSecond = second.split(" ");
+        ArrayList<Integer> listFirst = new ArrayList<>();
+        ArrayList<Integer> listSecond = new ArrayList<>();
+        ArrayList<Integer> res = new ArrayList<>();
+
+        for(int i = 1; i < tokensFirst.length; i++) {
+
+                listFirst.add(Integer.parseInt(tokensFirst[i]));
+                listSecond.add(Integer.parseInt(tokensSecond[i]));
+
+       }
+
+        for (Integer x : listSecond) {
+            if (listFirst.contains(x)) res.add(listFirst.indexOf(x)+1);
+            else res.add(-1);
         }
 
-        //размер массива индексов
-        int k = scanner.nextInt();
-        int[] result=new int[k];
-        for (int i = 0; i < k; i++) {
-            int value = scanner.nextInt();
-            //тут реализуйте бинарный поиск индекса
+        int[] result = new int[res.size()];
+        for (int i = 0; i < res.size(); i++) {
+            result[i] = res.get(i);
+         }
 
-
-
-
-            result[i]=0;
-        }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
-        String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson04/dataA.txt");
+    public static void main(String[] args) throws IOException {
+        InputStream stream = new FileInputStream("src/by/it/group151051/padabied/lesson04/dataA.txt");
         A_BinaryFind instance = new A_BinaryFind();
         //long startTime = System.currentTimeMillis();
         int[] result=instance.findIndex(stream);
@@ -67,6 +73,7 @@ public class A_BinaryFind {
         for (int index:result){
             System.out.print(index+" ");
         }
+
     }
 
 }
