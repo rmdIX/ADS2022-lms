@@ -1,8 +1,7 @@
 package by.it.group151051.padabied.lesson05;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -45,52 +44,47 @@ public class A_QSort {
         Segment(int start, int stop){
             this.start = start;
             this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
         }
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            return Integer.compare(this.stop, o.start);
         }
     }
 
 
-    int[] getAccessory(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
-        Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //число отрезков отсортированного массива
-        int n = scanner.nextInt();
-        Segment[] segments=new Segment[n];
-        //число точек
-        int m = scanner.nextInt();
-        int[] points=new int[m];
-        int[] result=new int[m];
+    int[] getAccessory(InputStream stream) throws IOException {
+        int[] result;
+        String line;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        line = reader.readLine();
+        ArrayList<Segment> segments = new ArrayList<>();
+        ArrayList<Integer> res = new ArrayList<>();
 
-        //читаем сами отрезки
-        for (int i = 0; i < n; i++) {
-            //читаем начало и конец каждого отрезка
-            segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
+        int size = Integer.parseInt(line.split(" ")[0]);
+        for (int i = 0; i < size; i++ ) {
+            line = reader.readLine();
+            String[] tokens = line.split(" ");
+            segments.add(new Segment(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1])));
+         }
+        line = reader.readLine();
+        for (String point : line.split(" ")) {
+            int count = 0;
+            int p = Integer.parseInt(point);
+            for (Segment segment : segments) {
+                if (p >= segment.start && p <= segment.stop) count++;
+            }
+            res.add(count);
         }
-        //читаем точки
-        for (int i = 0; i < m; i++) {
-            points[i]=scanner.nextInt();
+        result = new int[res.size()];
+        for (int i = 0; i < res.size(); i++) {
+            result[i] = res.get(i);
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-
-
-
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+     return result;
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         String root = System.getProperty("user.dir") + "/src/";
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson05/dataA.txt");
         A_QSort instance = new A_QSort();
