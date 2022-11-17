@@ -41,6 +41,41 @@ public class C_GreedyKnapsack {
 
             return 0;
         }
+
+        public static void quickSortR(Item[] items, int low, int high) {
+            if (items.length == 0)
+                return;
+            if (low >= high)
+                return;
+
+            int middle = low + (high - low) / 2;
+            Item pivot = items[middle];
+
+            int i = low, j = high;
+            while (i <= j) {
+                while ( (items[i].cost / items[i].weight) > (pivot.cost  / pivot.weight) ) {
+                    i++;
+                }
+
+                while ( (items[j].cost / items[j].weight) < (pivot.cost / pivot.weight) ) {
+                    j--;
+                }
+
+                if (i <= j) {
+                    Item temp = items[i];
+                    items[i] = items[j];
+                    items[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+
+            if (low < j)
+                quickSortR(items, low, j);
+
+            if (high > i)
+                quickSortR(items, i, high);
+        }
     }
 
     double calc(File source) throws FileNotFoundException {
@@ -57,18 +92,35 @@ public class C_GreedyKnapsack {
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n",n,W);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально возможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
+        //Сортировка по убыванию предметов по удельной ценности
+        Item.quickSortR(items,0, items.length-1);
+
+        //Заполнение рюкзака
+        int currentWeigh = 0;
+        int i = 0;
         double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
-        //ваше решение.
-
-
-
-
+        while (currentWeigh <= 60 && i < items.length) { //Пока есть место в рюкзаке и предметы не кончились
+            if (currentWeigh + items[i].weight <= 60) { //Если весь предмет помещается в рюкзак
+                result += items[i].cost; // Весь предмет помещается в рюкзак
+                currentWeigh += items[i].weight;
+            }
+            else {  // Иначе места на целый предмет недостаточно
+                while (i < items.length) {
+                    double emptySpace = 60 - currentWeigh; // Оставшееся место в рюкзаке
+                    if (items[i].weight < emptySpace) { // Если предмет помещается в пустое место
+                        result += items[i].cost; // Весь предмет помещается в рюкзак
+                        currentWeigh += items[i].weight;
+                        i++;
+                    }
+                    else { // Иначе предмет разбивается на части и необходимая часть помещается в рюкзак
+                        result += ((double)items[i].cost / (double)items[i].weight) * emptySpace;
+                        break; // Рюкзак заполнен
+                    }
+                }
+                break; // Рюкзак заполнен
+            }
+            i++;
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n",result);
         return result;
@@ -76,9 +128,9 @@ public class C_GreedyKnapsack {
 
     public static void main(String[] args) throws FileNotFoundException {
         long startTime = System.currentTimeMillis();
-        String root=System.getProperty("user.dir")+"/src/";
-        File f=new File(root+"by/it/a_khmelev/lesson02/greedyKnapsack.txt");
-        double costFinal=new C_GreedyKnapsack().calc(f);
+        String root = System.getProperty("user.dir")+"/src/";
+        File f = new File(root+"by/it/a_khmelev/lesson02/greedyKnapsack.txt");
+        double costFinal = new C_GreedyKnapsack().calc(f);
         long finishTime = System.currentTimeMillis();
         System.out.printf("Общая стоимость %f (время %d)",costFinal,finishTime - startTime);
     }
