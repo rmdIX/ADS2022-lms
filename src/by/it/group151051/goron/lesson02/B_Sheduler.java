@@ -47,13 +47,37 @@ public class B_Sheduler {
         //начало и конец событий могут совпадать.
         List<Event> result;
         result = new ArrayList<>();
-        //ваше решение.
+        int numOfEvents = events.length;
 
+        //поиск события с минимальным временем завершения
+        Event minStop = events[0];
+        int indexOfMin = 0;
+        for (int i = 1; i < numOfEvents; i++) {
+            if (events[i].stop <= minStop.stop) {
+                minStop = events[i];
+                indexOfMin = i;
+                result.add(minStop);
+            }
+        }
 
+        //Поиск следующего события с временем начала, которое больше чем время завершения предыдущего
+        for (int i = indexOfMin; i<numOfEvents; i++) {
+            if (events[i].start >= minStop.stop) {
+                Event currentMin = events[i]; //Предполагаемое событие с временем начала, которое больше, чем время завершения у предыдущего
+                int minDuration = currentMin.stop - currentMin.start; //Продолжительность предполагаемого события
+                for (int j = i+1; j < numOfEvents; j++) { //Поиск события с временем начала или продолжительностью ещё меньше чем у предыдущего
+                    int currentDuration = events[j].stop-events[j].start; //Его продолжительность
+                    //Чем меньше продолжительность события, тем меньше вероятность перекрыть другие события. Поэтому оно будет предпочтительным
+                    //в случае одинакового времени начала
+                    if (events[j].start >= minStop.stop && events[j].start <= currentMin.start && currentDuration < minDuration) {
+                        currentMin = events[j];
+                    }
+                }
+                result.add(currentMin);
+                minStop = currentMin; //В следующей итерации будем отталкиваться от времени завершения найденного события
+            }
+        }
 
-
-
-
-        return result;                        //вернем итог
+        return result;
     }
 }
