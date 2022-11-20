@@ -37,6 +37,33 @@ import java.util.Scanner;
 
 public class A_QSort {
 
+    public static int quickSortFind(Segment[] segments, int low, int high, int point) {
+        int segCount = 0;
+        int middle = low + (high - low) / 2;
+        Segment pivot = segments[middle];
+
+        int i = low, j = high;
+        while (i <= j) {
+            while ( segments[i].compareTo(pivot) <= 0) {
+                if (segments[i].start <= point && segments[i].stop >= point)
+                    segCount++;
+                i++;
+            }
+
+            while ( segments[j].compareTo(pivot) > 0) {
+                if (segments[j].start <= point && segments[j].stop >= point)
+                    segCount++;
+                j--;
+            }
+
+            if (i <= j) {
+                i++;
+                j--;
+            }
+        }
+        return segCount;
+    }
+
     //отрезок
     private class Segment  implements Comparable<Segment>{
         int start;
@@ -52,8 +79,12 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            if (start > o.start)
+                return 1;
+            else if (start < o.start)
+                return -1;
+            else
+                return 0;
         }
     }
 
@@ -75,13 +106,15 @@ public class A_QSort {
             //читаем начало и конец каждого отрезка
             segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
         }
-        //читаем точки
-        for (int i = 0; i < m; i++) {
-            points[i]=scanner.nextInt();
-        }
+
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        // Читаем точки и сразу ищем интервалы
 
+        for (int i = 0; i < m; i++) {
+            points[i] = scanner.nextInt();
+            result[i] = quickSortFind(segments,0,n-1,points[i]);
+        }
 
 
 
@@ -92,7 +125,7 @@ public class A_QSort {
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson05/dataA.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/goron/lesson05/dataA.txt");
         A_QSort instance = new A_QSort();
         int[] result=instance.getAccessory(stream);
         for (int index:result){
