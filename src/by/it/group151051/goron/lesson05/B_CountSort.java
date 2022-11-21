@@ -32,9 +32,27 @@ public class B_CountSort {
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
+        // Поиск минимального и максимального элемента
+        int min, max;
+        max = min = points[0];
+        for (int i = 0; i < points.length; i++) {
+            if (points[i] < min)
+                min = points[i];
+            if (points[i] > max)
+                max = points[i];
+        }
 
+        // Подсчет сколько раз встречается каждое число в массиве
+        int[] counter = new int[max - min + 1];
+        for (int i = 0; i < points.length; i++)
+            counter[points[i] - min]++;
 
-
+        // Заполнение исходного массива числами в зависимости от того как часто число встречается в массиве
+        int index = 0;
+        for (int i = 0; i < counter.length; i++) {
+            for (int j = 0; j < counter[i]; j++)
+                points[index++] = i + min;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
@@ -50,5 +68,4 @@ public class B_CountSort {
             System.out.print(index+" ");
         }
     }
-
 }
