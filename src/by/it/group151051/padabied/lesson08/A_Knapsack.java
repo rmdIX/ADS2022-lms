@@ -3,7 +3,7 @@ package by.it.group151051.padabied.lesson08;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Scanner;
+import java.util.*;
 
 /*
 Задача на программирование: рюкзак с повторами
@@ -37,19 +37,30 @@ Sample Output 2:
 public class A_Knapsack {
 
     int getMaxWeight(InputStream stream ) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         Scanner scanner = new Scanner(stream);
-        int w=scanner.nextInt();
-        int n=scanner.nextInt();
-        int gold[]=new int[n];
+        int w = scanner.nextInt();
+        int n = scanner.nextInt();
+        int[] gold = new int[n];
+        ArrayList<Integer> goldList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
+        int currMax = 0;
 
+        for (int x : gold) {
+            goldList.add(x);
+        }
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        if (goldList.contains(1)) return w;
+        else if (w%2 == 0 && goldList.contains(2)) return w;
+
+        for (Integer currGold: goldList) {
+            while (currMax + currGold <= w) {
+                currMax += currGold;
+            }
+        }
+
+        return currMax;
     }
 
 
