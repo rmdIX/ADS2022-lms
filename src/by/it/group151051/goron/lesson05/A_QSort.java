@@ -36,7 +36,6 @@ import java.util.Scanner;
 */
 
 public class A_QSort {
-
     public static int quickSortFind(Segment[] segments, int low, int high, int point) {
         int segCount = 0;
         int middle = low + (high - low) / 2;
@@ -44,20 +43,15 @@ public class A_QSort {
 
         int i = low, j = high;
         while (i <= j) {
-            while ( segments[i].compareTo(pivot) <= 0) {
+            while (segments[i].compareTo(pivot) <= 0) {
                 if (segments[i].start <= point && segments[i].stop >= point)
                     segCount++;
                 i++;
             }
 
-            while ( segments[j].compareTo(pivot) > 0) {
+            while (segments[j].compareTo(pivot) > 0) {
                 if (segments[j].start <= point && segments[j].stop >= point)
                     segCount++;
-                j--;
-            }
-
-            if (i <= j) {
-                i++;
                 j--;
             }
         }
@@ -88,7 +82,6 @@ public class A_QSort {
         }
     }
 
-
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -109,15 +102,12 @@ public class A_QSort {
 
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-        // Читаем точки и сразу ищем интервалы
 
+        // Читаем точки и сразу ищем интервалы
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
             result[i] = quickSortFind(segments,0,n-1,points[i]);
         }
-
-
-
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
