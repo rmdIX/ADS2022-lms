@@ -37,23 +37,40 @@ public class B_LongDivComSubSeq {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //общая длина последовательности
         int n = scanner.nextInt();
-        int[] m = new int[n];
+        int[] X = new int[n];
         //читаем всю последовательность
         for (int i = 0; i < n; i++) {
-            m[i] = scanner.nextInt();
+            X[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int result;
 
+        int[] divSubSeq = new int[n]; // Массив для хранения длин всех кратных подпоследовательностей
+        divSubSeq[0] = 1;
+        for (int i = 1; i < n; i++) {  // Снизу вверх находим длины всех кратных подпоследовательностей
+            divSubSeq[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (X[i] % X[j] == 0) {            // Если текущий элемент делится без остатка на предыдущий
+                    divSubSeq[i] = divSubSeq[j]+1; // То текущий элемент образует подпоследовательность со всеми элементами
+                                                   // подпоследовательности предыдущего элемента
+                }
+            }
+        }
 
+        // Длиной наибольшей кратной подпоследовательности будет максимальное число в массиве длин всех подпоследовательностей
+        int longestDivSubSeq = divSubSeq[0];
+        for (int i = 1; i < n; i++) {
+            if (divSubSeq[i] > longestDivSubSeq)
+                longestDivSubSeq = divSubSeq[i];
+        }
+
+        result = longestDivSubSeq;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
-
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson06/dataB.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/goron/lesson06/dataB.txt");
         B_LongDivComSubSeq instance = new B_LongDivComSubSeq();
         int result = instance.getDivSeqSize(stream);
         System.out.print(result);
