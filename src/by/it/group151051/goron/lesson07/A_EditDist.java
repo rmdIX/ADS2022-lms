@@ -39,9 +39,6 @@ import java.util.Scanner;
 
 public class A_EditDist {
     int wagnerFischer (int[][] matrix, int i, int j, String str1, String str2) {
-        if (i > str1.length())  // Условие прекращения рекурсии
-            return matrix[i-1][j];
-
         if (i == 0 || j == 0) {     // Первые условия рекуррентной формулы:
             if (i == 0 && j == 0)   // Когда i = 0, j = 0;
                 matrix[i][j] = 0;
@@ -65,8 +62,8 @@ public class A_EditDist {
             i++;
             j = 0;
         }
-        else if (i == matrix.length-1) {
-            i++;
+        else if (i == matrix.length-1) {  // Условие прекращения рекурсии
+            return matrix[i][j];
         }
 
         return wagnerFischer(matrix, i, j, str1, str2);
