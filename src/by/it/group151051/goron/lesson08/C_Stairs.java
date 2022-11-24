@@ -36,25 +36,38 @@ public class C_Stairs {
 
     int getMaxSum(InputStream stream ) {
         Scanner scanner = new Scanner(stream);
-        int n=scanner.nextInt();
-        int stairs[]=new int[n];
+        int n = scanner.nextInt();
+        int[] stairs = new int[n];
         for (int i = 0; i < n; i++) {
-            stairs[i]=scanner.nextInt();
+            stairs[i] = scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
-
-
-
-
+        int i = 0;
+        int[] stairsSum = new int[n+1];
+        while (i <= n) {
+            if (i == 0) {   // Если ступенек нет, то нет и суммы
+                stairsSum[i] = 0;
+                i++;
+            }
+            else if (i == 1) {  // Если ступенька одна, то прыгаем на ее
+                stairsSum[i] = stairs[i-1];
+                i++;
+            }
+            else {
+                stairsSum[i] = stairsSum[i-1] + stairs[i-1];    // Иначе, просто прыгаем на следующую ступеньку с текущей и записываем эту сумму
+                // Но если перейти на предпоследнюю ступеньку и перепрыгнуть текущую ступеньку сумма окажется больше
+                int jumpOverSum = stairsSum[i - 2] + stairs[i - 1];
+                if (jumpOverSum > stairsSum[i])
+                    stairsSum[i] = jumpOverSum;    // то перепрыгиваем её и записываем эту сумму
+                i++;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return stairsSum[n];
     }
-
-
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson08/dataC.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/goron/lesson08/dataC.txt");
         C_Stairs instance = new C_Stairs();
         int res=instance.getMaxSum(stream);
         System.out.println(res);
