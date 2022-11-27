@@ -70,16 +70,17 @@ public class C_GreedyKnapsack {
 
 
         for (Item item:items) {
-            if (weightLeft > 0) {
-                if (item.weight < weightLeft) {
-                    result += item.cost;
-                    weightLeft -= item.weight;
-                } else {
-                    result += (double)item.cost / item.weight * weightLeft;
-                    weightLeft = 0;
-                }
+            if (weightLeft == 0) {
+                break;
             }
 
+            if (item.weight < weightLeft) {
+                result += item.cost;
+                weightLeft -= item.weight;
+            } else {
+                result += (double)item.cost / item.weight * weightLeft;
+                weightLeft = 0;
+            }
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n",result);
