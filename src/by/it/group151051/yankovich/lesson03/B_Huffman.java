@@ -53,17 +53,27 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
         scanner.nextLine();
-        Map<String, Integer> dict = new HashMap<>();
+        Map<String, String> dict = new HashMap<>();
         for (int i=0; i<count; i++){
             String symbol = scanner.next();
-            Integer counter = scanner.nextInt();
-            dict.put(symbol.substring(0, 1), counter);
+            String counter = scanner.next();
+            dict.put(counter, symbol.substring(0, 1));
 
         }
         System.out.println(dict);
-
-
-
+        scanner.nextLine();
+        String code = scanner.next();
+        System.out.println(code);
+        String temp = new String();
+        for (int i=0; i<code.length(); i++){
+            temp = temp + code.charAt(i);
+            if (code.charAt(i) == '0'){
+                //System.out.println(dict.get(temp));
+                result.append(dict.get(temp));
+                temp = "";
+            }
+        }
+        result.append(dict.get(temp));
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
