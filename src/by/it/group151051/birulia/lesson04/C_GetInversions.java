@@ -50,12 +50,48 @@ public class C_GetInversions {
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
 
+        class Inverse {
 
+            public static int inversions;
 
+            public static int[] sort(int[] array, int startIndex, int endIndex) {
+                if (startIndex > endIndex - 1) {
+                    return new int[] { array[startIndex] };
+                }
+                int middleIndex = (int) Math.floor(startIndex + (endIndex - startIndex) / 2);
 
+                return merge(sort(array,startIndex,middleIndex), sort(array,middleIndex + 1, endIndex));
+            }
 
+            static int[] merge(int[] array1, int[] array2) {
+                int index1 = 0;
+                int index2 = 0;
+                int[] merged = new int[array1.length + array2.length];
+                int mergedIndex = 0;
 
+                while (index1 < array1.length && index2 < array2.length) {
 
+                    if (array1[index1] <= array2[index2])
+                        merged[mergedIndex++] = array1[index1++];
+                    else {
+                        merged[mergedIndex++] = array2[index2++];
+                        inversions += (array1.length - index1);
+                    }
+                }
+
+                while (index1 < array1.length)
+                    merged[mergedIndex++] = array1[index1++];
+
+                while (index2 < array2.length)
+                    merged[mergedIndex++] = array2[index2++];
+
+                return merged;
+            }
+        }
+
+        Inverse.sort(a,0,a.length - 1);
+
+        result = Inverse.inversions;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;

@@ -51,17 +51,17 @@ public class A_BinaryFind {
             int endIndex = a.length - 1;
 
             while (startIndex <= endIndex) {
-                int middle = (int) Math.floor((startIndex + endIndex) / 2);
+                int middleIndex = (int) Math.floor((startIndex + endIndex) / 2);
 
-                if (a[middle] == value) {
-                    result[i] = middle + 1;
+                if (a[middleIndex] == value) {
+                    result[i] = middleIndex + 1;
                     startIndex = 0;
                     endIndex = a.length - 1;
                     break;
-                } else if (a[middle] < value) {
-                    startIndex = middle + 1;
+                } else if (a[middleIndex] < value) {
+                    startIndex = middleIndex + 1;
                 } else {
-                    endIndex = middle - 1;
+                    endIndex = middleIndex - 1;
                 }
             }
 

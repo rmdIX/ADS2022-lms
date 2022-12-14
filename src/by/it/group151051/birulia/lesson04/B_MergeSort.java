@@ -40,52 +40,43 @@ public class B_MergeSort {
 
 
         class MergeSort {
-            static int[] mergeSort(int[] src, int n) {
-                if (n < 2) return src;
 
-                int mid = n / 2;
-                int[] left = new int[mid];
-                int[] right = new int[n - mid];
+            public static int[] sort(int[] array, int startIndex, int endIndex) {
+                if (startIndex > endIndex - 1) {
+                    return new int[] { array[startIndex] };
+                }
+                int middleIndex = (int) Math.floor(startIndex + (endIndex - startIndex) / 2);
 
-                System.arraycopy(src, 0, left, 0, mid);
-                System.arraycopy(src, mid, right, 0, n - mid);
-
-                mergeSort(left, mid);
-                mergeSort(right, n - mid);
-
-                return merge(src, left, right, mid, n - mid);
+                return merge(sort(array,startIndex,middleIndex), sort(array,middleIndex + 1, endIndex));
             }
 
-            static int[] merge(int[] src, int[] left, int[] right, int leftLength, int rightLength) {
-                int k = 0, i = 0, j = 0;
+            static int[] merge(int[] array1, int[] array2) {
+                int index1 = 0;
+                int index2 = 0;
+                int[] merged = new int[array1.length + array2.length];
+                int mergedIndex = 0;
 
-                while (i < leftLength && j < rightLength) {
-                    if (left[i] <= right[j]) src[k++] = left[i++];
-                    else src[k++] = right[j++];
+                while (index1 < array1.length && index2 < array2.length) {
+
+                    if (array1[index1] <= array2[index2])
+                        merged[mergedIndex++] = array1[index1++];
+                    else {
+                        merged[mergedIndex++] = array2[index2++];
+                    }
                 }
 
-                while (i < leftLength) {
-                    src[k++] = left[i++];
-                }
+                while (index1 < array1.length)
+                    merged[mergedIndex++] = array1[index1++];
 
-                while (j < rightLength) {
-                    src[k++] = right[j++];
-                }
+                while (index2 < array2.length)
+                    merged[mergedIndex++] = array2[index2++];
 
-                return src;
+                return merged;
             }
         }
 
-        MergeSort.mergeSort(a, n);
-
-
-
-
-
-
-
+        return MergeSort.sort(a, 0,a.length - 1);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return a;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
