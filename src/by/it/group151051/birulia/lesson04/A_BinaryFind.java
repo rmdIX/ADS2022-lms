@@ -49,6 +49,7 @@ public class A_BinaryFind {
 
             int startIndex = 0;
             int endIndex = a.length - 1;
+            result[i] = -1;
 
             while (startIndex <= endIndex) {
                 int middleIndex = (int) Math.floor((startIndex + endIndex) / 2);
@@ -63,10 +64,6 @@ public class A_BinaryFind {
                 } else {
                     endIndex = middleIndex - 1;
                 }
-            }
-
-            if (result[i] == 0){
-                result[i] = -1;
             }
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!

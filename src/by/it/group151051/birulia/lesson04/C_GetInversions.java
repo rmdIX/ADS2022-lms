@@ -55,7 +55,7 @@ public class C_GetInversions {
             public static int inversions;
 
             public static int[] sort(int[] array, int startIndex, int endIndex) {
-                if (startIndex > endIndex - 1) {
+                if (startIndex == endIndex) {
                     return new int[] { array[startIndex] };
                 }
                 int middleIndex = (int) Math.floor(startIndex + (endIndex - startIndex) / 2);

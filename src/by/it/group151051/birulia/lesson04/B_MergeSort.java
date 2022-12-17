@@ -42,7 +42,7 @@ public class B_MergeSort {
         class MergeSort {
 
             public static int[] sort(int[] array, int startIndex, int endIndex) {
-                if (startIndex > endIndex - 1) {
+                if (startIndex == endIndex) {
                     return new int[] { array[startIndex] };
                 }
                 int middleIndex = (int) Math.floor(startIndex + (endIndex - startIndex) / 2);
