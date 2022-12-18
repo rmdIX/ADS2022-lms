@@ -42,7 +42,7 @@ public class A_QSort {
         Integer start;
         Integer stop;
 
-        public Segment(int start, int stop){
+        Segment(int start, int stop){
             this.start = start;
             this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
@@ -51,11 +51,8 @@ public class A_QSort {
 
         @Override
         public int compareTo(Segment o) {
-            int result=this.start.compareTo(o.stop);
-            if(result==0){
-                result=this.stop.compareTo(o.stop);
-            }
-
+            int result=this.start.compareTo(o.start);
+            //System.out.print(result + "   ");
             return result;
         }
     }
@@ -81,14 +78,26 @@ public class A_QSort {
         //читаем точки
         for (int i = 0; i < m; i++) {
             points[i]=scanner.nextInt();
+            int counter = 0;
+            int left=0;
+            int right=n-1;
+            int middle=(left+right)/2;
+            Segment current =segments[middle];
+            while (left<=right){
+                while (segments[left].compareTo(current)==0){
+                    if (segments[left].start<=points[i] &&segments[left].stop>=points[i])
+                        counter++;
+                    left++;
+                }
+                while(segments[right].compareTo(current)>0){
+                    if(segments[right].start<=points[i]&& segments[right].stop>=points[i])
+                        counter++;
+                    right--;
+                }
+            }
+            result[i]=counter;
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
-
-
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
