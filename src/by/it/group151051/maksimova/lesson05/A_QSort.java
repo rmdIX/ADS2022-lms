@@ -39,10 +39,10 @@ public class A_QSort {
 
     //отрезок
     private class Segment  implements Comparable<Segment>{
-        int start;
-        int stop;
+        Integer start;
+        Integer stop;
 
-        Segment(int start, int stop){
+        public Segment(int start, int stop){
             this.start = start;
             this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
@@ -51,9 +51,12 @@ public class A_QSort {
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
+            int result=this.start.compareTo(o.stop);
+            if(result==0){
+                result=this.stop.compareTo(o.stop);
+            }
 
-            return 0;
+            return result;
         }
     }
 
