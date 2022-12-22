@@ -33,6 +33,37 @@ public class QSort {
         }
     }
 
+    public class QSortSeg {
+        static int divide (A_QSort.Segment a[], int start, int end)
+        {
+            A_QSort.Segment pivot = a[end];
+            int i = (start - 1);
+
+            for (int j = start; j <= end - 1; j++)
+            {
+                if (a[j].compareTo(pivot) == -1)
+                {
+                    i++;
+                    A_QSort.Segment t = a[i];
+                    a[i] = a[j];
+                    a[j] = t;
+                }
+            }
+            A_QSort.Segment t = a[i+1];
+            a[i+1] = a[end];
+            a[end] = t;
+            return (i + 1);
+        }
+        static void quick(A_QSort.Segment a[], int start, int end)
+        {
+            if (start < end)
+            {
+                A_QSort.Segment p = divide(a, start, end);
+                quick(a, start, p - 1);
+                quick(a, p + 1, end);
+            }
+        }
+
     public static void main(String[] args){
         A_QSort.Segment[] seg_arr = new A_QSort.Segment[10];
         Random rand = new Random();
