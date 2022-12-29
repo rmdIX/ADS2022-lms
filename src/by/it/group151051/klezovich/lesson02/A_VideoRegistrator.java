@@ -1,6 +1,7 @@
 package by.it.group151051.klezovich.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 даны события events
@@ -30,6 +31,11 @@ public class A_VideoRegistrator {
         //hint: сортировка Arrays.sort обеспечит скорость алгоритма
         //C*(n log n) + C1*n = O(n log n)
 
+        Arrays.sort(events);
+        result.add(events[i]);
+        i = 1;
+        workDuration = events[i] +1;
+
         //пока есть незарегистрированные события
         //получим одно событие по левому краю
         //и запомним время старта видеокамеры
@@ -37,7 +43,18 @@ public class A_VideoRegistrator {
         //и теперь пропустим все покрываемые события
         //за время до конца работы, увеличивая индекс
 
+        while ( i < events.length)
+        {
+            if ( workDuration >= events[i])
+                ;
+            else {
+                workDuration = events[i] + 1;
+                result.add(events[i]);
+            }
+            i++;
 
+
+        }
 
         return result;                        //вернем итог
     }

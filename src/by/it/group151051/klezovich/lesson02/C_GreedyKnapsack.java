@@ -12,6 +12,7 @@ package by.it.group151051.klezovich.lesson02;
 Необходимо собрать наиболее дорогой вариант рюкзака для этого объема
 Предметы можно резать на кусочки (т.е. алгоритм будет жадным)
  */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -45,30 +46,63 @@ public class C_GreedyKnapsack {
 
     double calc(File source) throws FileNotFoundException {
         Scanner input = new Scanner(source);
-        int n = input.nextInt();      //сколько предметов в файле
-        int W = input.nextInt();      //какой вес у рюкзака
-        Item[] items = new Item[n];   //получим список предметов
-        for (int i = 0; i < n; i++) { //создавая каждый конструктором
+
+        int n = input.nextInt();      // сколько предметов в файле
+        int W = input.nextInt();      // какой вес у рюкзака
+
+        Item[] items = new Item[n];   // получим список предметов
+
+        for (int i = 0; i < n; i++)   // создавая каждый конструктором
             items[i] = new Item(input.nextInt(), input.nextInt());
-        }
-        //покажем предметы
-        for (Item item:items) {
+
+
+        for (Item item:items)  //покажем предметы
             System.out.println(item);
-        }
+
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n",n,W);
 
         //тут необходимо реализовать решение задачи
         //итогом является максимально воможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
+
         double result = 0;
+
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
         //ваше решение.
 
+        for (int i = 0; i < items.length - 1; i++)
+        {
+            int max = i;
 
+            for (int j = i + 1; j < items.length; j++)
+                if ((items[max].cost / items[max]. weight) < (items[j].cost / items[j]. weight))
+                    max = j;
 
+            Item temp = items[i];
+            items[i] = items[max];
+            items[max] = temp;
 
+        }
+
+        int i = 0;
+
+        while (i < items.length)
+        {
+            if (W >= items[i].weight)
+            {
+                W -= items[i].weight;
+                result += items[i].cost;
+            }
+            else
+            {
+                result += items[i].cost / items[i].weight * W;
+                W = 0;
+            }
+
+            i++;
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n",result);
         return result;
