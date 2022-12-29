@@ -1,7 +1,9 @@
 package by.it.group151051.padabied.lesson03;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -42,29 +44,67 @@ import java.util.Scanner;
 
 public class B_Huffman {
 
-    String decode(File file) throws FileNotFoundException {
-        StringBuilder result=new StringBuilder();
-        //прочитаем строку для кодирования из тестового файла
-        Scanner scanner = new Scanner(file);
-        Integer count = scanner.nextInt();
-        Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
-
-
-
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        return result.toString(); //01001100100111
+    String decode(File file) throws IOException {
+        StringBuilder result = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String str = reader.readLine();
+        String[] tokens = str.split(" ");
+        int count = Integer.parseInt(tokens[0]);
+        int length = Integer.parseInt(tokens[1]);
+        Map<String, String> chars = new HashMap<>();
+        for (int i = 0; i < count; i++) {
+            str = reader.readLine();
+            tokens = str.split(": ");
+            chars.put(tokens[0], tokens[1]);
+        }
+        String haf = reader.readLine();
+        //4 14
+        //a: 0
+        //b: 10
+        //c: 110
+        //d: 111
+        //01001100100111
+        for (int i = 0; i < length; ) { //i = 11 j = 13
+            StringBuilder codePrev = new StringBuilder(String.valueOf(haf.charAt(i)));
+            StringBuilder codeNext = new StringBuilder(String.valueOf(haf.charAt(i)));
+            for (int j = i+1; j < length; j++) {
+                codeNext.append(haf.charAt(j));
+                boolean exist = false;
+                for (String value : chars.values()) {
+                    if (value.startsWith(codeNext.toString())) {
+                        codePrev = new StringBuilder(codeNext.toString());
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    for (Map.Entry<String, String> entry : chars.entrySet()) {
+                        if (entry.getValue().equals(codePrev.toString())) {
+                            result.append(entry.getKey());
+                            i+= codePrev.toString().length();
+                            break;
+                        }
+                    }
+                    break;
+                }
+                if (j == length-1) {
+                    for (Map.Entry<String, String> entry : chars.entrySet()) {
+                        if (entry.getValue().equals(codeNext.toString())) {
+                            result.append(entry.getKey());
+                            return result.toString();
+                        }
+                    }
+                }
+            }
+        }
+        return result.toString(); 
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         String root = System.getProperty("user.dir") + "/src/";
         File f = new File(root + "by/it/a_khmelev/lesson03/encodeHuffman.txt");
         B_Huffman instance = new B_Huffman();
         String result = instance.decode(f);
         System.out.println(result);
     }
-
-
 }
