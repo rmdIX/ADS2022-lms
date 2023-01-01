@@ -59,7 +59,6 @@ public class A_Knapsack {
                 currMax += currGold;
             }
         }
-
         return currMax;
     }
 
