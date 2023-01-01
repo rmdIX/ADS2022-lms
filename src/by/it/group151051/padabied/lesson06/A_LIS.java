@@ -34,7 +34,7 @@ import java.util.Scanner;
 public class A_LIS {
 
 
-    int getSeqSize(InputStream stream) throws FileNotFoundException {
+    int getSeqSize(InputStream stream) {
         Scanner scanner = new Scanner(stream);
         int n = scanner.nextInt();
         int[] m = new int[n];
@@ -51,7 +51,7 @@ public class A_LIS {
 
         for (int j = 1; j < m.length; j++) {
             for (int k = 0; k < j; k++) {
-                if (m[j] > m[k]) {
+                if (m[j] > m[k]) {          //Тут проверяется условие A[i[j]]<A[i[j+1]]
                     if (sub[j] <= sub[k]) {
                         sub[j] = sub[k] + 1;
                     }
