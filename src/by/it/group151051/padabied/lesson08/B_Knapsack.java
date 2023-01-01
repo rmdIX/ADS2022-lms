@@ -35,7 +35,7 @@ public class B_Knapsack {
         int size =scanner.nextInt();
         int goldCount =scanner.nextInt();
         ArrayList<Integer> goldList = new ArrayList<>();
-        int gold[]=new int[goldCount];
+        int[] gold = new int[goldCount];
         for (int i = 0; i < goldCount; i++) {
             gold[i]=scanner.nextInt();
         }
