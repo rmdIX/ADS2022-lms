@@ -3,6 +3,8 @@ package by.it.group151051.klezovich.lesson03;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -43,16 +45,47 @@ import java.util.Scanner;
 public class B_Huffman {
 
     String decode(File file) throws FileNotFoundException {
+
         StringBuilder result=new StringBuilder();
+
         //прочитаем строку для кодирования из тестового файла
+
         Scanner scanner = new Scanner(file);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        Map <String, String> table = new HashMap<>();
 
+        String letter = "";
+        String code = "";
+        scanner.nextLine();
 
+        for (int i = 0; i < count; i++) {
+            String[] str= scanner.nextLine().split(": ");
+            table.put(str[1], str[0]);
+        }
+
+        String coded = scanner.nextLine();
+        code = "";
+        int i = 0;
+
+        while ( i < length)
+        {
+            code = code + coded.charAt(i);
+
+            if (table.containsKey(code) == true)
+            {
+                letter = table.get(code);
+                result.append(letter);
+                code = "";
+                letter = "";
+            }
+
+            i++;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
@@ -65,6 +98,4 @@ public class B_Huffman {
         String result = instance.decode(f);
         System.out.println(result);
     }
-
-
 }

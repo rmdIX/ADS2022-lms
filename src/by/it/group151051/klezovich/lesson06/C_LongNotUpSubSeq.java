@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /*
 Задача на программирование: наибольшая невозростающая подпоследовательность
@@ -40,23 +41,54 @@ public class C_LongNotUpSubSeq {
 
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
+
         Scanner scanner = new Scanner(stream);
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //общая длина последовательности
+
         int n = scanner.nextInt();
         int[] m = new int[n];
+
         //читаем всю последовательность
-        for (int i = 0; i < n; i++) {
+
+        for (int i = 0; i < n; i++)
             m[i] = scanner.nextInt();
-        }
+
         //тут реализуйте логику задачи методами динамического программирования (!!!)
+
+        int distance[] = new int[n];
+
+        for (int i = 0; i < n; i++)
+        {
+            distance[i] = 1;
+
+            for (int j = 0; j < i; j++)
+                if (m[j] >= m[i] && distance[j] + 1 > distance[i])
+                    distance[i] = distance[j] + 1;
+        }
+
         int result = 0;
 
+        for (int i = 0; i < n; i++)
+            if (distance[i] > result)
+                result = distance[i];
+
+        int length = result;
+        int sequence[] = new int[length];
+
+        for (int i = n-1; i >= 0; i--)
+            if (distance[i] == length)
+            {
+                sequence[length - 1] = i + 1;
+                length--;
+            }
+
+        System.out.println(Arrays.toString(sequence));
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";

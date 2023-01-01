@@ -60,35 +60,102 @@ public class A_QSort {
 
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
+
         Scanner scanner = new Scanner(stream);
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //число отрезков отсортированного массива
+
         int n = scanner.nextInt();
-        Segment[] segments=new Segment[n];
+        Segment[] segments = new Segment[n];
+
         //число точек
+
         int m = scanner.nextInt();
-        int[] points=new int[m];
-        int[] result=new int[m];
+        int[] points = new int[m];
+        int[] result = new int[m];
 
         //читаем сами отрезки
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++)
+        {
             //читаем начало и конец каждого отрезка
             segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
         }
         //читаем точки
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++)
             points[i]=scanner.nextInt();
-        }
+
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        QuickSort(segments, n);
+        for (int i = 0; i < m; i++)
+        {
+            int j = 0;
 
-
+            while (points[i] >= segments[j].start && points[i] <= segments[j].stop)
+            {
+                result[i]++;
+                j++;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    public void QuickSort(Segment[] arr, int n)
+    {
+        int[][] stack = new int[n+1][2];
+        int s = 1;
+        int left = 0;
+        int right = 0;
+
+        stack[s][0] = 0;
+        stack[s][1] = n - 1;
+
+        do
+        {
+            left = stack[s][0];
+            right = stack[s][1];
+            s--;
+
+            do
+            {
+                int i = left;
+                int j = right;
+                int middle = (left + right) / 2;
+
+                do
+                {
+                    while (arr[i].start < middle)
+                        i++;
+
+                    while (arr[j].start > middle)
+                        j--;
+
+                    if (i <= j)
+                    {
+                        Segment temp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = temp;
+                        i++;
+                        j--;
+                    }
+                } while (i < j);
+
+                if (i < right)
+                {
+                    s++;
+                    stack[s][0] = i;
+                    stack[s][1] = right;
+                }
+
+                right = j;
+
+            }while (left < right);
+        }while (s > 0);
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";

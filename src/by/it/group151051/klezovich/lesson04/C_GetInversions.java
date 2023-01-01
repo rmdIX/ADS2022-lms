@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /*
 Рассчитать число инверсий одномерного массива.
@@ -49,18 +50,70 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
-
-
-
-
-
+        result = MergeSort(a, n);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    public int Merge(int[] a, int[] first, int[] second, int n1, int n2)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int invertions = 0;
+
+        while ((i < n1) && (j < n2))
+        {
+            if (first[i] <= second[j])
+            {
+                a[k] = first[i];
+                k++;
+                i++;
+            }
+            else
+            {
+                a[k] = second[j];
+                invertions += n1 - i;
+
+                k++;
+                j++;
+            }
+        }
+
+        while (i < n1)
+        {
+            a[k] = first[i];
+            k++;
+            i++;
+        }
+
+        while (j < n2)
+        {
+            a[k] = second[j];
+            k++;
+            j++;
+        }
+
+        return invertions;
+    }
+
+    public int MergeSort(int[] arr ,int length)
+    {
+        if (length < 2)
+            return 0;
+
+        int invertions = 0;
+        int middle = length / 2;
+        int[] b = Arrays.copyOf(arr, middle);
+        int[] c = Arrays.copyOfRange(arr, middle, length);
+
+        invertions += MergeSort(b, middle);
+        invertions += MergeSort(c, length - middle);
+        invertions += Merge(arr, b, c, middle, length - middle);
+
+        return invertions;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";

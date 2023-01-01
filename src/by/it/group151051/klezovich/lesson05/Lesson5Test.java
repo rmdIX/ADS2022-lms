@@ -40,5 +40,4 @@ public class Lesson5Test {
         boolean ok=Arrays.equals(result,new int[]{1,0,0});
         assertTrue("C failed", ok);
     }
-
 }
