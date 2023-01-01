@@ -39,15 +39,26 @@ import java.util.Scanner;
 
 public class B_EditDist {
 
+    public int minOfThree (int a, int b, int c) {
+        return Integer.min(a, Integer.min(b, c));
+    }
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int m = one.length();
+        int n = two.length();
 
+        if (m == 0) return n;
+        if (n == 0) return m;
 
+        int cost = (one.charAt(m - 1) == two.charAt(n - 1)) ? 0: 1;
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return minOfThree(
+                //Удаление
+                getDistanceEdinting(one.substring(0, one.length()-1), two) + 1,
+                //Вставка
+                getDistanceEdinting(one,two.substring(0, two.length()-1)) + 1,
+                //Замена
+                getDistanceEdinting(one.substring(0, one.length()-1),  two.substring(0, two.length()-1)) + cost);
     }
 
 
