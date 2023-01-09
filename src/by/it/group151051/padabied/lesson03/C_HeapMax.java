@@ -38,44 +38,82 @@ import java.util.Scanner;
 public class C_HeapMax {
 
     private class MaxHeap {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение.
-        //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
-        private List<Long> heap = new ArrayList<>();
+        Node root;
 
-        int siftDown(int i) { //просеивание вверх
-
-            return i;
+        void insert(Long value) {
+            if (root == null) {
+                root = new Node(value);
+            }
+            else {
+                insertRecursive(value, root);
+            }
         }
 
-        int siftUp(int i) { //просеивание вниз
-
-            return i;
+        void insertRecursive(Long value, Node parent) {
+            if (value < parent.value) {
+                if (parent.left == null) {
+                    parent.left = new Node(value);
+                }
+                else {
+                    insertRecursive(value, parent.left);
+                }
+            }
+            else if (value > parent.value) {
+                if (parent.right == null) {
+                    parent.right = new Node(value);
+                }
+                else {
+                    insertRecursive(value, parent.right);
+                }
+            }
         }
 
-        void insert(Long value) { //вставка
+        Long extractMax() {
+            Node curr = root;
+            long max;
+
+            while (curr.right != null) {
+                curr = curr.right;
+            }
+            max = curr.value;
+
+            if (root.left != null) {
+                curr = root.left;
+                while (curr.right != null) {
+                    curr = curr.right;
+                }
+                if (curr.value > max) {
+                    max = curr.value;
+                }
+            }
+
+            return max;
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        private class Node {
+            Long value;
+            Node left;
+            Node right;
 
-            return result;
+            public Node(Long value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+            }
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
 
     //эта процедура читает данные из файла, ее можно не менять.
     Long findMaxValue(InputStream stream) {
-        Long maxValue=0L;
+        long maxValue = 0L;
         MaxHeap heap = new MaxHeap();
-        //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(stream);
-        Integer count = scanner.nextInt();
+        int count = scanner.nextInt();
         for (int i = 0; i < count; ) {
             String s = scanner.nextLine();
             if (s.equalsIgnoreCase("extractMax")) {
-                Long res=heap.extractMax();
-                if (res!=null && res>maxValue) maxValue=res;
+                Long res = heap.extractMax();
+                if (res != null && res > maxValue) maxValue = res;
                 System.out.println();
                 i++;
             }
@@ -84,7 +122,6 @@ public class C_HeapMax {
                 if (p[0].equalsIgnoreCase("insert"))
                     heap.insert(Long.parseLong(p[1]));
                 i++;
-            //System.out.println(heap); //debug
             }
         }
         return maxValue;
@@ -94,11 +131,6 @@ public class C_HeapMax {
         String root = System.getProperty("user.dir") + "/src/";
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson03/heapData.txt");
         C_HeapMax instance = new C_HeapMax();
-        System.out.println("MAX="+instance.findMaxValue(stream));
+        System.out.println("MAX=" + instance.findMaxValue(stream));
     }
-
-    // РЕМАРКА. Это задание исключительно учебное.
-    // Свои собственные кучи нужны довольно редко.
-    // "В реальном бою" все существенно иначе. Изучите и используйте коллекции
-    // TreeSet, TreeMap, PriorityQueue и т.д. с нужным CompareTo() для объекта внутри.
 }
