@@ -38,7 +38,7 @@ import java.util.Scanner;
 public class A_QSort {
 
     //отрезок
-    public class Segment  implements Comparable<Segment>{
+    public static class Segment  implements Comparable<Segment>{
         int start;
         int stop;
 
@@ -58,7 +58,21 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
+            if(start < o.start){
+                return -1;
+            }
+            else if(start > o.start){
+                return 1;
+            }
+            else if(start==o.start){
+                if(stop < o.stop){
+                    return -1;
+                }
+                else if(stop > o.stop){
+                    return 1;
+                }
+                else return 0;
+            }
             return 0;
         }
     }
@@ -103,5 +117,4 @@ public class A_QSort {
             System.out.print(index+" ");
         }
     }
-
 }
