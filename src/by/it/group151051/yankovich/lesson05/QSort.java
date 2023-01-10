@@ -31,6 +31,32 @@ public class QSort {
         }
     }
 
+    static int divideSeg(A_QSort.Segment a[], int start, int end) {
+        A_QSort.Segment pivot = a[end];
+        int i = (start - 1);
+
+        for (int j = start; j <= end - 1; j++) {
+            if (a[j].compareTo(pivot) == -1) {
+                i++;
+                A_QSort.Segment t = a[i];
+                a[i] = a[j];
+                a[j] = t;
+            }
+        }
+        A_QSort.Segment t = a[i + 1];
+        a[i + 1] = a[end];
+        a[end] = t;
+        return (i + 1);
+    }
+
+    static void quickSeg(A_QSort.Segment[] a, int start, int end) {
+        if (start < end) {
+            int p = divideSeg(a, start, end);
+            quickSeg(a, start, p - 1);
+            quickSeg(a, p + 1, end);
+        }
+    }
+
     public static void main(String[] args){
         int[] array = {5, 9, 6, 7, 11, 2, 3};
         System.out.println("Source array:");
