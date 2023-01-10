@@ -56,16 +56,20 @@ public class QSort {
     }
 
     public static void main(String[] args) {
-        A_QSort.Segment[] seg_arr = new A_QSort.Segment[100];
+        A_QSort.Segment[] seg_arr = new A_QSort.Segment[10];
         Random rand = new Random();
         for (int i = 0; i < seg_arr.length; i++) {
             seg_arr[i] = new A_QSort.Segment(rand.nextInt(10), rand.nextInt(11, 20));
         }
         int count = 0;
+        System.out.println("Random array:");
         for (A_QSort.Segment seg : seg_arr) {
-            System.out.printf("Segment #%d\nstart: %d, stop: %d\n", ++count, seg.start, seg.stop);
+            System.out.printf("Segment #%d start: %d, stop: %d\n", ++count, seg.start, seg.stop);
         }
+        System.out.println(" ");
         quickSeg(seg_arr, 0, seg_arr.length-1);
+        count = 0;
+        System.out.println("Sorted array:");
         for (A_QSort.Segment seg : seg_arr) {
             System.out.printf("Segment #%d start: %d, stop: %d\n", ++count, seg.start, seg.stop);
         }
