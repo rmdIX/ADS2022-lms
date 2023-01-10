@@ -56,7 +56,7 @@ public class QSort {
     }
 
     public static void main(String[] args) {
-        A_QSort.Segment[] seg_arr = new A_QSort.Segment[10];
+        A_QSort.Segment[] seg_arr = new A_QSort.Segment[25];
         Random rand = new Random();
         for (int i = 0; i < seg_arr.length; i++) {
             seg_arr[i] = new A_QSort.Segment(rand.nextInt(10), rand.nextInt(11, 20));
@@ -75,19 +75,3 @@ public class QSort {
         }
     }
 }
-//        int[] array = {5, 9, 6, 7, 11, 2, 3};
-//        System.out.println("Source array:");
-//        for (int number:
-//             array) {
-//            System.out.print(number + " ");
-//        }
-//        System.out.println();
-//
-//        quick(array, 0, array.length-1);
-//
-//        System.out.println("Sorted array:");
-//        for (int number:
-//                array) {
-//            System.out.print(number + " ");
-//        }
-//        System.out.println();
