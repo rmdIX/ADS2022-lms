@@ -1,11 +1,11 @@
 package by.it.group151051.maksimova.lesson01;
 
-import java.math.BigInteger;
-
 /*
  * Вам необходимо выполнить способ вычисления чисел Фибоначчи с вспомогательным массивом
  * без ограничений на размер результата (BigInteger)
  */
+
+import java.math.BigInteger;
 
 public class FiboB {
 
@@ -24,8 +24,16 @@ public class FiboB {
     }
 
     BigInteger fastB(Integer n) {
-        //здесь нужно реализовать вариант с временем O(n) и памятью O(n)
-        return BigInteger.ZERO;
+
+        BigInteger a = BigInteger.valueOf(1);
+        BigInteger b = BigInteger.valueOf(1);
+        for (int i = 3; i <= n; i++) {
+            BigInteger c = a.add(b);
+            a = b;
+            b=c;
+        }
+        System.out.println(b);
+        return b;
     }
 
 }
