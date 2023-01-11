@@ -25,9 +25,40 @@ public class FiboC {
         //Решение сложно найти интуитивно
         //возможно потребуется дополнительный поиск информации
         //см. период Пизано
-        return 0L;
+        if (m == 1) {
+            return 0;
+        }
+        if (m == 2) {
+            if (n % 3 == 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        int a = 6;
+        int max = m * m + 1;
+        long[] mas = new long[max];
+        mas[0] = 1;
+        mas[1] = 1;
+        for (int i = 2; i < max; i++) {
+            mas[i] = (mas[i - 1] + mas[i - 2]) % m;
+        }
+        int index = 0;
+        while(true) {
+            if (mas[index] != mas[index + a]) {
+                index = 0;
+                a += 2;
+            }
+            index++;
+            if (index > a) {
+                break;
+            }
+            if (index > max - a) {
+                break;
+            }
+        }
+        int indOst = ((int)n % a) - 1;
+        return mas[indOst];
     }
-
-
-}
+    }
 
