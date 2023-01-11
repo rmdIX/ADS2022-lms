@@ -3,6 +3,7 @@ package by.it.group151051.gorovik.lesson05;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /*
@@ -43,8 +44,13 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop){
-            this.start = start;
-            this.stop = stop;
+            if (start < stop) {
+                this.start = start;
+                this.stop = stop;
+            } else{
+                this.start = stop;
+                this.stop = start;
+            }
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
         }
@@ -82,6 +88,10 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        int count = 0;
+        for (int i = 0; i < n; i++){
+
+        }
 
 
 
