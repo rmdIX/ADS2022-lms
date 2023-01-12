@@ -43,7 +43,20 @@ public class B_LongDivComSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int temp[] = new int[m.length];
+        int i, j, result = 0;
+
+        for (i = 0; i < n; i++)
+            temp[i] = 1;
+
+        for (i = 1; i < n; i++)
+            for (j = 0; j < i; j++)
+                if (m[i] % m[j] == 0 && temp[i] < temp[j] + 1)
+                    temp[i] = temp[j] + 1;
+
+        for (i = 0; i < n; i++)
+            if (result < temp[i])
+                result = temp[i];
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
