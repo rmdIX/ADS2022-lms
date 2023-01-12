@@ -45,11 +45,19 @@ public class A_Knapsack {
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
+        int min = gold[0];
+        int result = w / min;
+        for (int i=1; i<gold.length; i++){
+            if (gold[i] < min){
+                result = w & gold[i];
+                min = gold[i];
+            }
+        }
 
 
-        int result = 0;
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result * min;
     }
 
 
