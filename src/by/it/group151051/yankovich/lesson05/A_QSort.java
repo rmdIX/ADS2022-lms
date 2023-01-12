@@ -94,6 +94,7 @@ public class A_QSort {
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
             segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
+            System.out.println(segments[i].start + " " + segments[i].stop);
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
@@ -101,7 +102,7 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-
+        QSort.quickSeg(segments, );
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
