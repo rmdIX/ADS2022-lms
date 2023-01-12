@@ -41,26 +41,24 @@ public class A_EditDist {
 
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-         int m = one.length();
-         int n = two.length();
-         int [][]T=new int[m+1][n+1];
-         for(int i=0;i<m;i++){
-             T[i][0]=i;
-         }
-         for(int j =0;j<n;j++){
-             T[0][j]=j;
-         }
-         for(int i=1;i<=m;i++){
-             for(int j=1;j<=n;j++){
-                 int compar=one.charAt(i-1)==two.charAt(j-1)?0:1;
-                 T[i][j]=Integer.min(Integer.min(T[i-1][j]+1,T[i][j-1]+1),
-                         T[i-1][j-1]+compar);
-             }
-         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return T[m][n];
-    }
+
+        int m = one.length();
+        int n = two.length();
+        int c = 0;
+
+        if (m == 0) return n;
+        if (n == 0) return m;
+        if (one.charAt(m - 1) == two.charAt(n - 1)) c = 0; else c = 1;
+
+        String x_ = (m-1) > 0 ? one.substring(0,m-1) : "";
+        String y_ = (n-1) > 0 ? two.substring(0,n-1) : "";
+
+        return Math.min(
+                Math.min(
+                        getDistanceEdinting(one, y_) + 1,
+                        getDistanceEdinting(x_, two) + 1),
+                getDistanceEdinting(x_,y_) + c
+        );}
 
 
     public static void main(String[] args) throws FileNotFoundException {
