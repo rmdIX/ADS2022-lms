@@ -3,6 +3,7 @@ package by.it.group151051.yankovich.lesson08;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -42,19 +43,24 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int[] maxSumArray = new int[n];
         int result = 0;
-
-
-
-
+        maxSumArray[0] = stairs[0];
+        maxSumArray[1] = stairs[1];
+        for (int i=2; i<stairs.length; i++){
+            int max = stairs[i] + Math.max(stairs[i-2], stairs[i-1]);
+            maxSumArray[i] = max;
+        }
+        result = (Arrays.stream(maxSumArray).max()).getAsInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
 
+
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson08/dataC.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/yankovich/lesson08/dataC.txt");
         C_Stairs instance = new C_Stairs();
         int res=instance.getMaxSum(stream);
         System.out.println(res);
