@@ -59,7 +59,7 @@ public class QSort {
         A_QSort.Segment[] seg_arr = new A_QSort.Segment[25];
         Random rand = new Random();
         for (int i = 0; i < seg_arr.length; i++) {
-            seg_arr[i] = new A_QSort.Segment(rand.nextInt(10), rand.nextInt(11, 20));
+            seg_arr[i] = new A_QSort.Segment(rand.nextInt(15), rand.nextInt(5, 15));
         }
         int count = 0;
         System.out.println("Random array:");
