@@ -43,17 +43,14 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int[] maxSumArray = new int[n];
-        int result = 0;
-        maxSumArray[0] = stairs[0];
-        maxSumArray[1] = stairs[1];
-        for (int i=2; i<stairs.length; i++){
-            int max = stairs[i] + Math.max(stairs[i-2], stairs[i-1]);
-            maxSumArray[i] = max;
-        }
-        result = (Arrays.stream(maxSumArray).max()).getAsInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+    int result = steps(n - 1, stairs);
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+}
+    int steps(int n, int[] stairs) {
+        if (n < 0) return 0;
+        return stairs[n] + Math.max(steps(n - 1, stairs), steps(n - 2, stairs));
     }
 
 
