@@ -1,7 +1,6 @@
 package by.it.group151051.maksimova.lesson02;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 /*
 даны интервальные события events
 реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
@@ -11,9 +10,8 @@ import java.util.List;
 
 public class B_Sheduler {
     //событие у аудитории(два поля: начало и конец)
-    static class Event {
-        int start;
-        int stop;
+    static class Event implements Comparable<Event>{
+        int start,stop;
 
         Event(int start, int stop) {
             this.start = start;
@@ -24,7 +22,16 @@ public class B_Sheduler {
         public String toString() {
             return "("+ start +":" + stop + ")";
         }
+    @Override
+    public int compareTo(Event o) {
+        if (this.start == o.start) {
+            return Integer.compare(this.stop, o.stop);
+        }
+        else {
+            return Integer.compare(this.start, o.start);
+        }
     }
+}
 
     public static void main(String[] args) {
         B_Sheduler instance = new B_Sheduler();
@@ -35,25 +42,39 @@ public class B_Sheduler {
                 new Event(4, 5),  new Event(6, 7), new Event(6, 9), new Event(7, 9),
                 new Event(8, 9),  new Event(4, 6), new Event(8, 10), new Event(7, 10)
         };
-
-        List<Event> starts = instance.calcStartTimes(events,0,10);  //рассчитаем оптимальное заполнение аудитории
+        List<Event> starts = instance.calcStartTimes(events);  //рассчитаем оптимальное заполнение аудитории
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
 
-    List<Event> calcStartTimes(Event[] events, int from, int to) {
+    List<Event> calcStartTimes(Event[] events) {
         //events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
         //начало и конец событий могут совпадать.
+
         List<Event> result;
         result = new ArrayList<>();
-        //ваше решение.
+        Arrays.sort(events);
+        Event first = events[0];
+        int n= events.length;
 
+        int seg = first.stop;
+        int  ind = 0;
 
+        result.add(first);
 
-
-
-
-        return result;                        //вернем итог
+        while (ind < n) {
+            for (int i = 0; i < n; i++) {
+                if (events[i].start == seg) {
+                    result.add(events[i]);
+                    first = events[i];
+                    seg = first.stop;
+                    ind = i;
+                }
+            }
+            ind++;
+            seg++;
+        }
+        return result;
     }
 }
