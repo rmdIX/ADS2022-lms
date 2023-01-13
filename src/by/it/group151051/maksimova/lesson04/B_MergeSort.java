@@ -35,17 +35,36 @@ public class B_MergeSort {
             System.out.println(a[i]);
         }
 
-        // тут ваше решение (реализуйте сортировку слиянием)
-        // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
-
-
-
-
+        Sorting(a, n);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
+
+    public static void Sorting(int[] a, int n) {
+        if (n<2) return;
+        int mid = n/2;
+        int[] left = new int[mid];
+        int[] right = new int[n-mid];
+        System.arraycopy(a, 0, left, 0, mid);
+        System.arraycopy(a, mid, right, 0, n - mid);
+        Sorting(left, mid);
+        Sorting(right, n - mid);
+        total(a, left, right, mid, n - mid);
+    }
+    public static void total(int[] a, int[] left, int[] right, int mid, int afterMid) {
+        int k = 0;
+        int i = 0;
+        int j = 0;
+        while (i < mid && j < afterMid) {
+            if (left[i] <= right[j]) a[k++] = left[i++];
+            else a[k++] = right[j++];
+        }
+        while (i < mid) a[k++] = left[i++];
+        while (j < afterMid) a[k++] = right[j++];
+    }
+
+
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson04/dataB.txt");
