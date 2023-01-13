@@ -63,6 +63,37 @@ public class A_QSort {
         }
     }
 
+    static void swap(Segment[] arr, int i, int j)
+    {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    static int partition(Segment[] arr, int low, int high)
+    {
+        Segment pivot = arr[high];
+        int i = (low - 1);
+
+        for (int j = low; j <= high - 1; j++) {
+
+            if (arr[j].start < pivot.start) {
+
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return (i + 1);
+    }
+
+    static void quickSort(Segment[] arr, int low, int high)
+    {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
 
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
@@ -88,12 +119,16 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
-        int count = 0;
-        for (int i = 0; i < n; i++){
+        quickSort(segments, 0, n-1);
 
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                 if(points[i] >= segments[j].start && points[i] <= segments[j].stop)
+                     result[i]++;
+                 if(points[i] < segments[j].start)
+                     break;
+            }
         }
-
-
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
