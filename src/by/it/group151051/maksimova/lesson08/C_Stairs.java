@@ -43,9 +43,25 @@ public class C_Stairs {
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         int result = 0;
+        if(n==1)return stairs[0];
 
+        else if(n==2) return stairs[1]+stairs[0];
 
+        else {
+            for (int i = 0; i < n-1; i++) {
+                if(stairs[i]>stairs[i+1]){
+                    result+=stairs[i];
 
+                }else{
+                  result+=stairs[i+1];
+                    i++;
+                }
+                if(i==n-2){
+                    result+=stairs[n-1];
+                }
+
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -54,7 +70,7 @@ public class C_Stairs {
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson08/dataC.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/maksimova/lesson08/dataC.txt");
         C_Stairs instance = new C_Stairs();
         int res=instance.getMaxSum(stream);
         System.out.println(res);
