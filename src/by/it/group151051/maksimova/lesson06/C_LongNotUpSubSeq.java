@@ -3,6 +3,7 @@ package by.it.group151051.maksimova.lesson06;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -49,18 +50,47 @@ public class C_LongNotUpSubSeq {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int[] tail = new int[n];
+        int[] prev = new int[n];
 
+        int len = 0;
+        for (int i = 0; i < n; i++) {
+            int pos = lower_bound(m, tail, len, m[i]);
+            if (pos == len) {
+                ++len;
+            }
+            prev[i] = pos > 0 ? tail[pos - 1] : -1;
+            tail[pos] = i;
+        }
+
+        int[] res = new int[len];
+        for (int i = tail[len - 1]; i >= 0; i = prev[i]) {
+            res[--len] = i + 1;
+        }
+
+        return res.length;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+    }
+
+    static int lower_bound(int[] a, int[] tail, int len, int key) {
+        int lo = -1;
+        int hi = len;
+        while (hi - lo > 1) {
+            int mid = (lo + hi) >>> 1;
+            if (a[tail[mid]] >= key) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        return hi;
     }
 
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson06/dataC.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/maksimova/lesson06/dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
         System.out.print(result);
