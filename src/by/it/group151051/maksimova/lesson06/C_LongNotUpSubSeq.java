@@ -67,7 +67,8 @@ public class C_LongNotUpSubSeq {
         for (int i = tail[len - 1]; i >= 0; i = prev[i]) {
             res[--len] = i + 1;
         }
-
+        for (int i = 0; i < res.length; i++)
+            System.out.print(res[i] + " ");
         return res.length;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -93,7 +94,8 @@ public class C_LongNotUpSubSeq {
         InputStream stream = new FileInputStream(root + "by/it/group151051/maksimova/lesson06/dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
-        System.out.print(result);
+        System.out.println();
+        System.out.println(result);
     }
 
 }
