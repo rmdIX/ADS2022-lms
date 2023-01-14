@@ -52,12 +52,25 @@ public class B_Huffman {
         Scanner scanner = new Scanner(file);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
+        scanner.nextLine();
+        HashMap<String, String> table = new HashMap<>();
+        for (int i = 0; i < count; i++) {
+            String letterCode = scanner.nextLine();
+            String[] arr = letterCode.split(": ");
+            table.put(arr[1], arr[0]);
+        }
+        String encoded = scanner.nextLine();
 
+        while (encoded.length() != 0) {
+            for (String key : table.keySet()) {
+                if (encoded.startsWith(key)) {
+                    encoded = encoded.substring(key.length());
+                    result.append(table.get(key));
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        return result.toString(); //01001100100111
+                }
+            }
+        }
+         return result.toString(); //01001100100111
     }
 
     public static void main(String[] args) throws FileNotFoundException {
