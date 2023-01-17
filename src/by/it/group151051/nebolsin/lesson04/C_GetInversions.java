@@ -3,6 +3,7 @@ package by.it.group151051.nebolsin.lesson04;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -46,21 +47,52 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
+        int[] a_duplicate = Arrays.copyOf(a, n);
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-
-
-
-
-
+        if(n > 0){
+            result = mergesort(a, a_duplicate, 0, n-1);
+        }
+//        System.out.println(result);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    public static int merge(int[] arr, int[] aux, int low, int mid, int high)
+    {
+        int k = low, i = low, j = mid + 1;
+        int inversionCount = 0;
+
+        while (i <= mid && j <= high)
+        {
+            if (arr[i] <= arr[j]) {
+                aux[k++] = arr[i++];
+            }
+            else {
+                aux[k++] = arr[j++];
+                inversionCount += (mid - i + 1);
+            }
+        }
+
+        while (i <= mid) aux[k++] = arr[i++];
+        for (i = low; i <= high; i++) arr[i] = aux[i];
+
+        return inversionCount;
+    }
+
+    public static int mergesort(int[] arr, int[] aux, int low, int high)
+    {
+        if (high <= low) return 0;
+        int mid = (low + ((high - low) >> 1));
+        int inversionCount = 0;
+
+        inversionCount += mergesort(arr, aux, low, mid);
+        inversionCount += mergesort(arr, aux, mid + 1, high);
+        inversionCount += merge(arr, aux, low, mid, high);
+
+        return inversionCount;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
