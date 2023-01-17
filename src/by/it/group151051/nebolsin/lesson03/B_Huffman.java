@@ -2,6 +2,8 @@ package by.it.group151051.nebolsin.lesson03;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -41,7 +43,6 @@ import java.util.Scanner;
 //        abacabad
 
 public class B_Huffman {
-
     String decode(File file) throws FileNotFoundException {
         StringBuilder result=new StringBuilder();
         //прочитаем строку для кодирования из тестового файла
@@ -51,8 +52,28 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        //put char frequency data into map object
+        Map<Integer, Character> pathMap = new HashMap<>();
+        for (int i = 0; i < count; i++)
+        {
+            char c = scanner.next().charAt(0);
+            int path = scanner.nextInt();
+            pathMap.put(path, c);
+        }
 
+        System.out.println(pathMap);
 
+        char[] code = scanner.next().toCharArray();
+        StringBuilder path = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            path.append(code[i]);
+            int key = Integer.parseInt(path.toString());
+
+            if (pathMap.containsKey(key)) {
+                result.append(pathMap.get(key));
+                path.setLength(0);
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
@@ -65,6 +86,4 @@ public class B_Huffman {
         String result = instance.decode(f);
         System.out.println(result);
     }
-
-
 }

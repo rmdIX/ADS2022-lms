@@ -44,21 +44,58 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
-
+            int k = 0;
+            int l = 2 * k + 1;
+            while(l < heap.size()) {
+                int max = l, r = l + 1;
+                if(r < heap.size() && heap.get(r).compareTo(heap.get(l)) > 0){
+                    max++;
+                }
+                if(heap.get(k).compareTo(heap.get(max)) < 0){
+                    //switch
+                    Long item = heap.get(k);
+                    heap.set(k, heap.get(max));
+                    heap.set(max, item);
+                    k = max;
+                    l = 2 * k + 1;
+                }
+                else break;
+            }
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            int k = heap.size() - 1;
+            while(k > 0) {
+                int p = (k - 1)/2;
+                Long item = heap.get(k);
+                Long parent = heap.get(p);
+                if(item.compareTo(parent) > 0){
+                    //swap
+                    heap.set(k, parent);
+                    heap.set(p, item);
+                    //move up
+                    k = p;
+                }
+                else break;
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
             Long result = null;
-
+            if (heap.size() >= 1)
+            {
+                result = heap.get(0);
+                heap.set(0, heap.get(heap.size() - 1));
+                heap.remove(heap.size() - 1);
+                siftDown(0);
+            }
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -84,7 +121,7 @@ public class C_HeapMax {
                 if (p[0].equalsIgnoreCase("insert"))
                     heap.insert(Long.parseLong(p[1]));
                 i++;
-            //System.out.println(heap); //debug
+                //System.out.println(heap); //debug
             }
         }
         return maxValue;
