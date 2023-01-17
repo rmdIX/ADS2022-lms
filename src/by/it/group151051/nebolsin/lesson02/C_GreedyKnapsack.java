@@ -14,6 +14,7 @@ package by.it.group151051.nebolsin.lesson02;
  */
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -37,8 +38,11 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
+            double this_k = (double)this.cost/(double)this.weight;
+            double o_k = (double)o.cost/(double)o.weight;
+            if(this_k != o_k){
+                return this_k > o_k ? -1 : 1;
+            }
             return 0;
         }
     }
@@ -64,12 +68,19 @@ public class C_GreedyKnapsack {
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
+        Arrays.sort(items);
         //ваше решение.
-
-
-
-
-
+        for (Item i : items) {
+            if(i.weight <= W){
+                W -= i.weight;
+                result += i.cost;
+            }
+            else {
+                double weight_partial_k = (double)W/(double)i.weight;
+                result += (double) i.cost * weight_partial_k;
+                W = 0;
+            }
+        }
         System.out.printf("Удалось собрать рюкзак на сумму %f\n",result);
         return result;
     }

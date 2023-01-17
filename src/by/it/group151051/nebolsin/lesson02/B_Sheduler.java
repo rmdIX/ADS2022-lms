@@ -1,6 +1,7 @@
 package by.it.group151051.nebolsin.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 даны интервальные события events
@@ -48,12 +49,25 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        Arrays.sort(events, (Event o1, Event o2) -> {
+            if (o1.start == o2.start) {
+                if (o1.stop == o2.stop) {
+                    return 0;
+                }
+                return o1.stop < o2.stop ? -1 : 1;
+            }
+            return o1.start < o2.start ? -1 : 1;
+        });
 
-
-
-
-
-
+        for (Event event : events){
+            if(event.start >= from){
+                if(event.stop > to){
+                    break;
+                }
+                result.add(event);
+                from = event.stop;
+            }
+        }
         return result;                        //вернем итог
     }
 }
