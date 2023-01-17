@@ -43,20 +43,37 @@ public class B_LongDivComSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
-
+        int result = dynamic_lms_count(m,n);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    static int dynamic_lms_count(int[] a, int n) {
+        int[] lms = new int[n];
+        int i, j, max = 0;
+
+        for (i = 0; i < n; i++) lms[i] = 1;
+        for (i = 1; i < n; i++)
+            for (j = 0; j < i; j++)
+                if(a[i] >= 0 && a[j] > 0 && a[i] != a[j]) {
+                    if (a[i]%a[j] == 0 && lms[i] < lms[j] + 1)
+                        lms[i] = lms[j] + 1;
+                }
+        for (i = 0; i < n; i++)
+            if (max < lms[i])
+                max = lms[i];
+
+        System.out.println(max);
+        return max;
+    }
+
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson06/dataB.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group151051/voronko/lesson06/dataB.txt");
         B_LongDivComSubSeq instance = new B_LongDivComSubSeq();
         int result = instance.getDivSeqSize(stream);
         System.out.print(result);
     }
-
 }

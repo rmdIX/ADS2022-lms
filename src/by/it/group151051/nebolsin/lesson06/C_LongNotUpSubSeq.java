@@ -50,13 +50,26 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
-
+        int result = dynamic_lds_count(m, n);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    static int dynamic_lds_count(int[] a, int n) {
+        int[] lds = new int[n];
+        int i, j, max = 0;
+
+        for (i = 0; i < n; i++) lds[i] = 1;
+        for (i = 1; i < n; i++)
+            for (j = 0; j < i; j++)
+                if (a[i] <= a[j] && lds[i] < lds[j] + 1)
+                    lds[i] = lds[j] + 1;
+        for (i = 0; i < n; i++)
+            if (max < lds[i])
+                max = lds[i];
+        return max;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
@@ -65,5 +78,4 @@ public class C_LongNotUpSubSeq {
         int result = instance.getNotUpSeqSize(stream);
         System.out.print(result);
     }
-
 }
