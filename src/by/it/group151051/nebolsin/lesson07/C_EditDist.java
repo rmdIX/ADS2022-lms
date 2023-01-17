@@ -123,8 +123,8 @@ public class C_EditDist {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/group151051/voronko/lesson07/dataABC.txt/dataABC.txt");
+        String root = System.getProperty("user.dir") + "/Prog/src/";
+        InputStream stream = new FileInputStream(root + "by/it/group151051/nebolsin/lesson07/dataABC.txt");
         C_EditDist instance = new C_EditDist();
         Scanner scanner = new Scanner(stream);
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(),scanner.nextLine()));

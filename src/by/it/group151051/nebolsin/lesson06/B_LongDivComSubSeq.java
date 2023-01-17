@@ -70,8 +70,8 @@ public class B_LongDivComSubSeq {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/group151051/voronko/lesson06/dataB.txt");
+        String root = System.getProperty("user.dir") + "/Prog/src/";
+        InputStream stream = new FileInputStream(root + "by/it/group151051/nebolsin/lesson06/dataB.txt");
         B_LongDivComSubSeq instance = new B_LongDivComSubSeq();
         int result = instance.getDivSeqSize(stream);
         System.out.print(result);

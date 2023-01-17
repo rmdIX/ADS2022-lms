@@ -42,22 +42,21 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
-
-
-
+        int result = steps(n - 1, stairs);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
+    int steps(int n, int[] stairs) {
+        if (n < 0) return 0;
+        return stairs[n] + Math.max(steps(n - 1, stairs), steps(n - 2, stairs));
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson08/dataC.txt");
+        String root = System.getProperty("user.dir") + "/Prog/src/";
+        InputStream stream = new FileInputStream(root + "by/it/group151051/nebolsin/lesson08/dataC.txt");
         C_Stairs instance = new C_Stairs();
         int res=instance.getMaxSum(stream);
         System.out.println(res);
     }
-
 }

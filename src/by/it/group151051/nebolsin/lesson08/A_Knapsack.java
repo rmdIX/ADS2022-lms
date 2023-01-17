@@ -3,6 +3,7 @@ package by.it.group151051.nebolsin.lesson08;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -45,17 +46,30 @@ public class A_Knapsack {
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
-
-
         int result = 0;
+
+        int[][] matrix = new int[n + 1][w + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= w; j++) {
+                if (gold[i-1] <= j) {
+                    matrix[i][j] = Arrays.stream(new int[]{
+                                    matrix[i-1][j],
+                                    matrix[i][j - gold[i-1]] + gold[i-1]})
+                            .max().getAsInt();
+                } else {
+                    matrix[i][j] = matrix[i-1][j];
+                }
+            }
+        }
+
+        result = matrix[n][w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-
     public static void main(String[] args) throws FileNotFoundException {
-        String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson08/dataA.txt");
+        String root = System.getProperty("user.dir") + "/Prog/src/";
+        InputStream stream = new FileInputStream(root + "by/it/group151051/nebolsin/lesson08/dataA.txt");
         A_Knapsack instance = new A_Knapsack();
         int res=instance.getMaxWeight(stream);
         System.out.println(res);
