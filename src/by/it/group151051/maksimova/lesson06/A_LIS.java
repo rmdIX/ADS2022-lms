@@ -1,12 +1,14 @@
-package by.it.a_khmelev.lesson06;
+package by.it.group151051.maksimova.lesson06;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
-Задача на программирование: наибольшая возрастающая подпоследовательность
+Задача на программирование: наибольшая возростающая подпоследовательность
 см.     https://ru.wikipedia.org/wiki/Задача_поиска_наибольшей_увеличивающейся_подпоследовательности
         https://en.wikipedia.org/wiki/Longest_increasing_subsequence
 
@@ -44,15 +46,26 @@ public class A_LIS {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+
+        int len = m.length;
+        int sub[] = new int[len];
+        int i, j, result = 0;
+        for (i = 0; i < len; i++)
+            sub[i] = 1;
+        for (i = 1; i < len; i++)
+            for (j = 0; j < i; j++)
+                if (m[i] > m[j] && sub[i] < sub[j] + 1)
+                    sub[i] = sub[j] + 1;
+        for (i = 0; i < len; i++)
+            if (result < sub[i])
+                result = sub[i];
         return result;
     }
 
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson06/dataA.txt");
+        InputStream stream = new FileInputStream(root + "by/it//a_khmelev/lesson06/dataA.txt");
         A_LIS instance = new A_LIS();
         int result = instance.getSeqSize(stream);
         System.out.print(result);
