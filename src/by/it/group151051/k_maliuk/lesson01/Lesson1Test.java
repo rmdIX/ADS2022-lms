@@ -1,13 +1,9 @@
 package by.it.group151051.k_maliuk.lesson01;
-
 import org.junit.Test;
-import org.junit.jupiter.api.Test;
-
 
 import java.math.BigInteger;
 
 import static org.junit.Assert.assertTrue;
-
 @SuppressWarnings("all")
 public class Lesson1Test {
     /*
