@@ -1,7 +1,5 @@
 package by.it.group151051.padabied.lesson04;
 
-import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
-
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
