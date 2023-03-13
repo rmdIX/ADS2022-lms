@@ -1,5 +1,6 @@
 package by.it.a_khmelev.lesson05;
 
+import by.it.group151051.artem_lakatun.lesson05.A_QSort;
 import org.junit.Test;
 
 import java.io.FileInputStream;
