@@ -2,6 +2,12 @@
 
 ## Algorithms & Data Structures
 
+**Часть 1-я**
+1. Индивидуальная практическая работа: lesson 01-08
+
+**Часть 2-я**
+1. Индивидуальная практическая работа: lesson 09-12
+
 ### Начало работы:
 
 **Посмотрите видео: <a href="https://youtu.be/mIs-X63CH78" target="_blank">Tutorial:QuickStart</a>**
