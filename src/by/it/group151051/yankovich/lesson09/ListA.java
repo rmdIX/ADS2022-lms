@@ -3,7 +3,7 @@ package by.it.group151051.yankovich.lesson09;
 import java.util.Arrays;
 
 public class ListA<T> {
-    private int size = 10;
+    private int size = 2;
     private T[] list;
     private int count = 0;
 
@@ -20,6 +20,7 @@ public class ListA<T> {
         if (cnt < size){
             return;
         }
-        list = Arrays.copyOf(list, size*2);
+        size *= 2;
+        list = Arrays.copyOf(list, size);
     }
 }
