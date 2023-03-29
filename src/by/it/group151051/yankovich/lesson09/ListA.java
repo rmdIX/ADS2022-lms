@@ -16,11 +16,22 @@ public class ListA<T> {
         list[count++] = value;
     }
 
+    public void remove(int index){
+        if (index < 0 || index > count){
+            return;
+        }
+        count--;
+        for (int i=index; i<count; i++){
+            list[i] = list[i+1];
+        }
+        list[count] = null;
+    }
+
     public void resize(int cnt){
         if (cnt < size){
             return;
         }
-        size *= 2;
+        size *= 1.5;
         list = Arrays.copyOf(list, size);
     }
 }
