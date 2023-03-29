@@ -27,6 +27,13 @@ public class ListA<T> {
         list[count] = null;
     }
 
+    public T get(int index){
+        if (index < 0 || index >= count){
+            throw new IndexOutOfBoundsException();
+        }
+        return list[index];
+    }
+
     public void resize(int cnt){
         if (cnt < size){
             return;
