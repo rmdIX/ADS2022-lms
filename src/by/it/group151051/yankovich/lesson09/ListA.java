@@ -34,6 +34,17 @@ public class ListA<T> {
         return list[index];
     }
 
+    @Override
+    public String toString(){
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+            for (int i=0; i<count-1; i++){
+                result.append(get(i) + ", ");
+            }
+            result.append(get(count-1) + "]");
+        return result.toString();
+    }
+
     public void resize(int cnt){
         if (cnt < size){
             return;
