@@ -1,7 +1,5 @@
 package by.it.group151051.yankovich.lesson09;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class ListA<T> {
     private int size = 10;
@@ -51,6 +49,8 @@ public class ListA<T> {
             return;
         }
         size *= 1.5;
-        list = Arrays.copyOf(list, size);
+        T[] newList = (T[]) new Object[size];
+        System.arraycopy(list, 0, newList, 0, count);
+        list = newList;
     }
 }
