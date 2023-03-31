@@ -15,15 +15,17 @@ public class ListA<T> {
         list[count++] = value;
     }
 
-    public void remove(int index){
+    public T remove(int index){
         if (index < 0 || index > count){
-            return;
+            throw new IndexOutOfBoundsException();
         }
+        T removed = list[index];
         count--;
         for (int i=index; i<count; i++){
             list[i] = list[i+1];
         }
         list[count] = null;
+        return removed;
     }
 
     public T get(int index){
