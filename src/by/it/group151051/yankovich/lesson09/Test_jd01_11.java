@@ -1,13 +1,14 @@
 package by.it.group151051.yankovich.lesson09;
 
 
-import by.it.HomeWork;
+//import by.it.HomeWork;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.lang.ClassLoader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -15,14 +16,14 @@ import static org.junit.Assert.fail;
 @SuppressWarnings("all")
 
 //поставьте курсор на следующую строку и нажмите Ctrl+Shift+F10
-public class Test_jd01_11 extends HomeWork {
+public class Test_jd01_11 extends ClassLoader {
 
 
     @Test(timeout = 1500)
     public void testTaskA__ListA() throws Exception {
         System.out.println("\nA. Диагностика обязательных к реализации методов:");
-        Class<?> aclass = findClass("ListA");
-        List<Integer> a = (List<Integer>) aclass.getDeclaredConstructor().newInstance();
+        Class<?> aclass = Class.forName("by.it.group151051.yankovich.lesson09.ListA");
+        ListA<Integer> a = (ListA<Integer>) aclass.getDeclaredConstructor().newInstance();
         List<Integer> e = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             e.add(i * 2);
