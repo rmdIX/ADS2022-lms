@@ -12,21 +12,27 @@ public class TaskA<E extends Comparable<E>>  implements NavigableSet<E> {
     //Обязательные к реализации методы и конструкторы
     public TaskA() {
     }
-
-    @Override
-    public boolean add(E e) {
-        return false;
+    public class Node {
+        public E value;
+        public Node left;
+        public Node right;
     }
 
-    @Override
-    public boolean remove(Object o) {
-        return false;
-    }
+        @Override
+        public boolean add(E e) {
+            return false;
+        }
 
-    @Override
-    public String toString() {
-        return null;
-    }
+        @Override
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     ////////         Эти методы реализовывать необязательно      ////////////
