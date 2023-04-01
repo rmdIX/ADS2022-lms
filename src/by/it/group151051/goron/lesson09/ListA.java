@@ -29,19 +29,16 @@ public class ListA<T> implements List<T> {
             Object[] newList = new Object[currCapacity];
             System.arraycopy(currList, 1, newList, 0, currList.length - 1);
             currList = newList;
-
-            return remElem;
         }
         else if (index == sizeOfList() - 1) {
             currList[index] = null;
-
-            return remElem;
         }
-
-        for (int i = index; i < sizeOfList() - 1; ++i) {
-            currList[i] = currList[i + 1];
+        else {
+            for (int i = index; i < sizeOfList() - 1; ++i) {
+                currList[i] = currList[i + 1];
+            }
+            currList[sizeOfList() - 1] = null;
         }
-        currList[sizeOfList() - 1] = null;
 
         return remElem;
     }
@@ -63,8 +60,8 @@ public class ListA<T> implements List<T> {
 
     private int sizeOfList() {
         int elemCount = 0;
-        for (int i = 0; i < currList.length; ++i) {
-            if (currList[i] == null || i == currList.length - 1) {
+        for (int i = 0; i <= currList.length; ++i) {
+            if (i == currList.length || currList[i] == null) {
                elemCount = i;
                break;
             }
