@@ -1,7 +1,7 @@
 package by.it.group151051.yankovich.lesson10;
 
 
-import by.it.HomeWork;
+//import by.it.HomeWork;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 @SuppressWarnings("all")
 
 //поставьте курсор на следующую строку и нажмите Ctrl+Shift+F10
-public class Test_jd01_10 extends HomeWork {
+public class Test_jd01_10 extends ClassLoader {
 
     @Test(timeout = 5000)
     public void testTaskA() throws Exception {
@@ -44,8 +44,8 @@ public class Test_jd01_10 extends HomeWork {
         randomCheck(methodNames, "TaskC");
     }
 
-    private void randomCheck(TreeSet<String> methodNames, String className) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Class<?> aclass = findClass(className);
+    private void randomCheck(TreeSet<String> methodNames, String className) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+        Class<?> aclass = Class.forName("by.it.group151051.yankovich.lesson10.TaskA");
         assertEquals("Неверное наследование", Object.class, aclass.getSuperclass());
         System.out.println("\nA. Диагностика обязательных к реализации методов:");
         NavigableSet<Integer> e = (NavigableSet<Integer>) TreeSet.class.getDeclaredConstructor().newInstance();
