@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Graph {
     private List<Vertex> vertices;
-    private Map<Vertex, List<Vertex>> adjVertices;
+    private Map<Character, List<Character>> adjVertices;
     private int size;
 
     public Graph(){
@@ -17,27 +17,28 @@ public class Graph {
 
     public void addVertex(char symbol){
         vertices.add(new Vertex(symbol));
-        adjVertices.put(new Vertex(symbol), new ArrayList<>());
+        adjVertices.put(symbol, new ArrayList<>());
     }
 
     public void addEdge(char source, char destination){
-        adjVertices.get(new Vertex(source)).add(new Vertex(destination));
+        adjVertices.get(source).add(destination);
+        adjVertices.get(destination).add(source);
     }
 
     public void showVertices(){
         for (Vertex vertex: vertices) {
-            System.out.println(vertex.data);
+            System.out.print(vertex.data + " ");
         }
+        System.out.println();
     }
 
     public void showEdges(){
         //int size = vertices.size();
-        for (Vertex vertex: adjVertices.keySet()) {
-            char name = vertex.data;
-            List<Vertex> neighbors = adjVertices.get(vertex);
-            System.out.print(name + ": ");
-            for (Vertex neighbor: neighbors) {
-                System.out.print(neighbor.data + " ");
+        for (char vertex: adjVertices.keySet()) {
+            List<Character> neighbors = adjVertices.get(vertex);
+            System.out.print(vertex + ": ");
+            for (char neighbor: neighbors) {
+                System.out.print(neighbor + " ");
             }
             System.out.println();
         }
