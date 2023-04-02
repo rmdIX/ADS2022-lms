@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class ListA<T> implements List<T> {
+public class ListB<T> implements List<T>{
     private int currCapacity = 10;
     private int listSize = 0;
     private Object[] currList;
 
-    public ListA() {
+    public ListB() {
         currList = new Object[currCapacity];
     }
 
@@ -25,6 +25,10 @@ public class ListA<T> implements List<T> {
     }
 
     public T remove(int index) {
+        if (index >= listSize || index < 0) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
         T remElem = (T) currList[index];
 
         if (index == 0) {
@@ -46,10 +50,16 @@ public class ListA<T> implements List<T> {
         return remElem;
     }
 
+    @Override
     public T get(int index) {
+        if (index >= listSize || index < 0) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
         return (T) currList[index];
     }
 
+    @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append('[');
@@ -59,6 +69,42 @@ public class ListA<T> implements List<T> {
         str.append(get(listSize - 1)).append(']');
 
         return str.toString();
+    }
+
+    public T set(int index, T element) {
+        if (index >= listSize || index < 0) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        T prevElem = (T) currList[index];
+        currList[index] = element;
+
+        return prevElem;
+    }
+
+    public void add(int index, T element) {
+        if (index >= currCapacity || index < 0) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        if (listSize == currCapacity) {
+            updateCapacity();
+        }
+
+        for (int i = listSize; i > index; --i) {
+            currList[i] = currList[i - 1];
+        }
+
+        ++listSize;
+        currList[index] = element;
+    }
+
+    public boolean addAll(Collection<? extends T> addedList) {
+        for (T elem : addedList) {
+            add(elem);
+        }
+
+        return true;
     }
 
     private void updateCapacity() {
@@ -72,6 +118,7 @@ public class ListA<T> implements List<T> {
     /////////////////////////////////////////////////////////////////////////
     //////////         Необязательные к реализации методы          //////////
     /////////////////////////////////////////////////////////////////////////
+
 
     public int size() {
         return listSize;
@@ -109,11 +156,6 @@ public class ListA<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
         return false;
     }
 
@@ -160,15 +202,5 @@ public class ListA<T> implements List<T> {
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return null;
-    }
-
-    @Override
-    public T set(int index, T element) {
-        return null;
-    }
-
-    @Override
-    public void add(int index, T element) {
-
     }
 }
