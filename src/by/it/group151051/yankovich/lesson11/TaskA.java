@@ -24,12 +24,9 @@ public class TaskA {
         graph.showNeighbors();
         // run main algorithm
         DFS dfs = new DFS('A');
-        StringBuilder result = new StringBuilder(); // save result
-        dfs.runDFS(graph.vertices.get(0), graph , result);
-        result = result.deleteCharAt(result.length()-1);
-        System.out.println(result);
-        System.out.println();
-
+        dfs.runDFS(graph.vertices.get(0), graph);
+        System.out.println(dfs.result);
+        dfs.classifyEdges();
 
     }
 }

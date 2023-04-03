@@ -8,7 +8,7 @@ import java.util.Map;
 public class Graph {
     public List<Vertex> vertices;
     public Map<Character, List<Character>> adjVertices;
-    public List<List<Character>> edges;
+    public static List<List<Character>> edges;
 
 
     public Graph(){
