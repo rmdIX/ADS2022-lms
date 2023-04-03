@@ -1,8 +1,5 @@
 package by.it.group151051.yankovich.lesson11;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TaskA {
     public static void main(String[] args) {
         Graph graph = new Graph();
@@ -13,8 +10,8 @@ public class TaskA {
         graph.showVertices();
         graph.addEdge('A', 'B');
         graph.addEdge('A', 'E');
-        graph.addEdge('B', 'E');
         graph.addEdge('B', 'C');
+        graph.addEdge('B', 'E');
         graph.addEdge('C', 'F');
         graph.addEdge('E', 'F');
         graph.addEdge('F', 'I');
@@ -22,6 +19,8 @@ public class TaskA {
         graph.addEdge('D', 'H');
         graph.addEdge('G', 'H');
         graph.showEdges();
+        DFS dfs = new DFS('A');
+        dfs.runDFS(graph.vertices.get(0), graph);
 
     }
 }

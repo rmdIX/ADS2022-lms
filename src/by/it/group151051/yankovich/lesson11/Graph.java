@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Graph {
-    private List<Vertex> vertices;
-    private Map<Character, List<Character>> adjVertices;
+    public List<Vertex> vertices;
+    public Map<Character, List<Character>> adjVertices;
     private int size;
 
     public Graph(){
@@ -43,4 +43,5 @@ public class Graph {
             System.out.println();
         }
     }
+
 }
