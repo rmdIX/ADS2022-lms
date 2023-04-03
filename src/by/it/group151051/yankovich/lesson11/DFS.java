@@ -7,14 +7,19 @@ public class DFS {
     public StringBuilder result;
     public List<List<Character>> edges;
     public Map<List<Character>, String> classification;
+    public int[] pre;
+    public int[] post;
+    private int time = 1;
 
     public DFS(char firstVertex){
         this.firstVertex = firstVertex;
         result = new StringBuilder();
         edges = Graph.edges;
         classification = new HashMap<>();
+        pre = new int[9];
     }
     public void runDFS(Vertex start, Graph graph){
+        pre[start.data - 65] = time++;
         start.visited = true;
         result.append(start.data+"-");
         for (char neighbor: graph.adjVertices.get(start.data)) {
@@ -68,6 +73,14 @@ public class DFS {
         Set<List<Character>> keys = classification.keySet();
         for (List key: keys) {
             System.out.println(key.get(0) + " " + key.get(1) + classification.get(key));
+        }
+        printPre();
+    }
+
+    public void printPre(){
+        for (int i: pre){
+            char vertex = (char) (i + 65);
+            System.out.println(vertex + " " + i);
         }
     }
 }
