@@ -1,7 +1,7 @@
 package by.it.group151051.artem_lakatun.lesson10;
 
 
-import by.it.HomeWork;
+import java.lang.ClassLoader;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -10,19 +10,20 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static com.sun.beans.finder.ClassFinder.findClass;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("all")
 
 //поставьте курсор на следующую строку и нажмите Ctrl+Shift+F10
-public class Test_jd01_10 extends HomeWork {
+public class Test_jd01_10 extends ClassLoader {
 
     @Test(timeout = 5000)
     public void testTaskA() throws Exception {
         TreeSet<String> methodNames = new TreeSet<>(Arrays.asList(
                 "toString", "add", "remove"
         ));
-        randomCheck(methodNames, "TaskA");
+        Class.forName("by.it.group151051.artem_lakatun.lesson10.TaskA");
     }
 
     @Test(timeout = 5000)
@@ -31,7 +32,7 @@ public class Test_jd01_10 extends HomeWork {
                 "toString", "add", "remove",
                 "contains", "clear", "isEmpty", "size", "first", "last"
         ));
-        randomCheck(methodNames, "TaskB");
+        Class.forName("by.it.group151051.artem_lakatun.lesson10.TaskB");
     }
 
     @Test(timeout = 5000)
@@ -41,10 +42,10 @@ public class Test_jd01_10 extends HomeWork {
                 "contains", "clear", "isEmpty", "size", "first", "last",
                 "lower", "floor", "ceiling", "higher", "pollFirst", "pollLast"
         ));
-        randomCheck(methodNames, "TaskC");
+        Class.forName("by.it.group151051.artem_lakatun.lesson10.TaskC");
     }
 
-    private void randomCheck(TreeSet<String> methodNames, String className) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    private void randomCheck(TreeSet<String> methodNames, String className) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
         Class<?> aclass = findClass(className);
         assertEquals("Неверное наследование", Object.class, aclass.getSuperclass());
         System.out.println("\nA. Диагностика обязательных к реализации методов:");
