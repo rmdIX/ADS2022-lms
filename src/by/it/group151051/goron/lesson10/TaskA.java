@@ -12,23 +12,6 @@ public class TaskA<E extends Comparable<E>> implements NavigableSet<E> {
     private static final boolean BLACK = false;
     private static final boolean RED = true;
 
-
-    private class Node {
-        Node left, right, parent;
-        boolean color;
-        E data;
-    }
-
-    // В случае удаления узла, у которого потомки = NIL,
-    // один из них занимает место удаляемого узла, поэтому для перехода к родителю этого NIL-узла
-    // необходим специальный узел-заглушка
-    private class NilNode extends Node {
-        private NilNode() {
-            super();
-            this.color = BLACK;
-        }
-    }
-
     //Обязательные к реализации методы и конструкторы
 
     private Node root;
@@ -72,7 +55,7 @@ public class TaskA<E extends Comparable<E>> implements NavigableSet<E> {
         }
         newNode.parent = parent;
 
-        fixPropsAfterAddingNode(newNode);
+        newNode.fixPropsAfterAddingNode();
         ++treeSize;
         return true;
     }
@@ -99,25 +82,26 @@ public class TaskA<E extends Comparable<E>> implements NavigableSet<E> {
 
         // У узла нет потомков или есть только один
         if (currNode.left == null || currNode.right == null) {
-            replacerNode = deleteNode(currNode);
+            replacerNode = currNode.deleteNode();
             deletedNodeColor = currNode.color;
         }
 
         // Есть два потомка
         else {
-            Node inorderSuccessor = findMin(currNode);
+            Node inorderSuccessor = currNode.findMin();
             currNode.data = inorderSuccessor.data;
 
-            replacerNode = deleteNode(inorderSuccessor);
+            replacerNode = inorderSuccessor.deleteNode();
             deletedNodeColor = inorderSuccessor.color;
         }
 
         if (deletedNodeColor == BLACK) {
-            fixPropsAfterDeletingNode(replacerNode);
+            assert replacerNode != null;
+            replacerNode.fixPropsAfterDeletingNode();
 
             // Remove the temporary NIL node
             if (replacerNode.getClass() == NilNode.class) {
-                changeParentChild(replacerNode.parent, replacerNode, null);
+                replacerNode.changeParentChild(replacerNode.parent, null);
             }
         }
 
@@ -153,267 +137,289 @@ public class TaskA<E extends Comparable<E>> implements NavigableSet<E> {
         return str.toString();
     }
 
-    private void rotateLeft(Node node) {
-        Node parent = node.parent;
-        Node rightChild = node.right;
 
-        node.right = rightChild.left;
-        if (rightChild.left != null) {
-            rightChild.left.parent = node;
-        }
+    /////////////////////////////////////////////////////////
+    ////////    Классы узла и методы работы с ним    ////////
+    /////////////////////////////////////////////////////////
 
-        rightChild.left = node;
-        node.parent = rightChild;
 
-        changeParentChild(parent, node, rightChild);
-    }
-
-    private void rotateRight(Node node) {
-        Node parent = node.parent;
-        Node leftChild = node.left;
-
-        node.left = leftChild.right;
-        if (leftChild.right != null) {
-            leftChild.right.parent = node;
-        }
-
-        leftChild.right = node;
-        node.parent = leftChild;
-
-        changeParentChild(parent, node, leftChild);
-    }
-
-    private void changeParentChild(Node parent, Node oldChild, Node newChild) {
-        if (parent == null) {
-            root = newChild;
-        }
-        else if (parent.left == oldChild) {
-            parent.left = newChild;
-        }
-        else if (parent.right == oldChild) {
-            parent.right = newChild;
-        }
-        else {
-            throw new IllegalStateException("Node is not a child of its parent");
-        }
-
-        if (newChild != null) {
-            newChild.parent = parent;
+    // В случае удаления узла, у которого потомки = NIL,
+    // один из них занимает место удаляемого узла, поэтому для перехода к родителю этого NIL-узла
+    // необходим специальный узел-заглушка
+    private class NilNode extends Node {
+        private NilNode() {
+            super();
+            this.color = BLACK;
         }
     }
 
-    private void fixPropsAfterAddingNode (Node node) {
-        Node parent = node.parent;
+    private class Node {
+        Node left, right, parent;
+        boolean color;
+        E data;
 
-        // Нарушение 2-го правила КЧД - корень всегда черный
-        if (parent == null) {
-            node.color = BLACK;
-            return;
-        }
+        private void rotateLeft() {
+            Node parent = this.parent;
+            Node rightChild = this.right;
 
-        // Если родитель черный, то никаких исправлений не делаем
-        if (parent.color == BLACK) {
-            return;
-        }
-
-        Node grandparent = parent.parent;
-        Node uncle = getUncle(parent);
-
-        // Нарушение 4-го правила (Красный родитель вставляемого узла), красный родитель и дядя
-        if (uncle != null && uncle.color == RED) {
-            // Перекрашиваем родителя, прародителя и дядю
-            parent.color = BLACK;
-            grandparent.color = RED;
-            uncle.color = BLACK;
-
-            // Т.к. прародитель красный, необходимо проверить его родителя
-            fixPropsAfterAddingNode(grandparent);
-        }
-
-        // Нарушение 4-го правила (Красный родитель вставляемого узла), родитель - левый потомок прародителя
-        else if (parent == grandparent.left) {
-            // Дядя - черный, и путь к вставляемому узлу от прародителя = left->right
-            if (node == parent.right) {
-                rotateLeft(parent);
-
-                // Указатель родителя устанавливаем на новый корневой элемент повернутого поддерева
-                parent = node;
+            this.right = rightChild.left;
+            if (rightChild.left != null) {
+                rightChild.left.parent = this;
             }
 
-            // Дядя - черный, и путь к вставляемому узлу от прародителя = left->left
-            rotateRight(grandparent);
+            rightChild.left = this;
+            this.parent = rightChild;
 
-            // Перекрашиваем родителя и прародителя
-            parent.color = BLACK;
-            grandparent.color = RED;
+            this.changeParentChild(parent, rightChild);
         }
 
-        // Нарушение 4-го правила (Красный родитель вставляемого узла), родитель - правый потомок прародителя
-        else {
-            // Дядя - черный, и путь к вставляемому узлу от прародителя = right->left
-            if (node == parent.left) {
-                rotateRight(parent);
+        private void rotateRight() {
+            Node parent = this.parent;
+            Node leftChild = this.left;
 
-                // Указатель родителя устанавливаем на новый корневой элемент повернутого поддерева
-                parent = node;
+            this.left = leftChild.right;
+            if (leftChild.right != null) {
+                leftChild.right.parent = this;
             }
 
-            // Дядя - черный, и путь к вставляемому узлу от прародителя = right->right
-            rotateLeft(grandparent);
+            leftChild.right = this;
+            this.parent = leftChild;
 
-            // Перекрашиваем родителя и прародителя
-            parent.color = BLACK;
-            grandparent.color = RED;
-        }
-    }
-
-    private Node getUncle (Node parent) {
-        Node grandparent = parent.parent;
-
-        if (grandparent.left == parent) {
-            return grandparent.right;
-        }
-        else if (grandparent.right == parent) {
-            return grandparent.left;
-        }
-        else {
-            throw new IllegalStateException("Parent is not a child of its grandparent");
-        }
-    }
-
-    private void fixPropsAfterDeletingNode (Node node) {
-        // Нарушение 2-го правила КЧД - корень всегда черный
-        if (node == root) {
-            node.color = BLACK;
-            return;
+            this.changeParentChild(parent, leftChild);
         }
 
-        // Далее следуют исправления если нарушено 5 правило КЧД
-        // (неодинаковое число черных узлов на пути к листам дерева)
-
-        Node sibling = getSibling(node);
-        // Случай если брат - красный
-        if (sibling.color == RED) {
-            handleRedSibling(node, sibling);
-            sibling = getSibling(node);
-        }
-
-        // Случай если брат черный и у него два черных потомка
-        if(isBlack(sibling.left) && isBlack(sibling.right)) {
-            sibling.color = RED;
-
-            // Если родитель красный
-            if (node.parent.color == RED) {
-                node.parent.color = BLACK;
+        private void changeParentChild(Node parent, Node newChild) {
+            if (parent == null) {
+                root = newChild;
             }
-            // Если родитель черный
-            else {
-                fixPropsAfterDeletingNode(node.parent);
+            else if (parent.left == this) {
+                parent.left = newChild;
             }
-        }
-
-        // Если брат черный и у него хотя бы один черный потомок
-        else {
-            handleBlackSiblings(node, sibling);
-        }
-    }
-
-    private void handleRedSibling (Node node, Node sibling) {
-        // Меняем цвет брата и родителя
-        sibling.color = BLACK;
-        node.parent.color = RED;
-
-        // И вращаем поддерево вокруг родителя
-        if (node == node.parent.right) {
-            rotateRight(node.parent);
-        }
-        else {
-            rotateLeft(node.parent);
-        }
-    }
-
-    // Нарушено 5 правило КЧД (неодинаковое число черных узлов на пути к листам дерева)
-    private void handleBlackSiblings (Node node, Node sibling) {
-        boolean nodeIsLeftChld = (node == node.parent.left);
-
-        // Случай если брат черный и он имеет хотя бы одного потомка, а также его племянник черный
-        if (nodeIsLeftChld && isBlack(sibling.right)) {
-            // Меняем цвет брата и его потомков
-            sibling.left.color = BLACK;
-            sibling.color = RED;
-            rotateRight(sibling);       // И вращаем поддерево в обратном направлении от удаляемого узла
-            sibling = node.parent.right;
-        }
-        // Если переданный узел правый потомок
-        else if (!nodeIsLeftChld && isBlack(sibling.left)){
-            sibling.right.color = BLACK;
-            sibling.color = RED;
-            rotateLeft(sibling);
-            sibling = node.parent.left;
-        }
-
-        // Случай если брат черный и он имеет хотя бы одного потомка, а также его племянник красный
-        // Меняем цвета брата и родителя
-        sibling.color = node.parent.color;
-        node.parent.color = BLACK;
-        if (nodeIsLeftChld) {
-            sibling.right.color = BLACK;
-            rotateLeft(node.parent);    // И вращаем поддерево в направлении удаляемого узла
-        }
-        else {
-            sibling.left.color = BLACK;
-            rotateRight(node.parent);
-        }
-    }
-
-    private Node getSibling (Node node) {
-        Node parent = node.parent;
-        if (node == parent.left) {
-            return parent.right;
-        }
-        else if (node == parent.right) {
-            return parent.left;
-        }
-        else {
-            throw new IllegalStateException("Parent is not a child of its grandparent");
-        }
-    }
-
-    private boolean isBlack(Node node) {
-        return node == null || node.color == BLACK;
-    }
-
-    private Node deleteNode (Node node) {
-        // У узла есть только левый потомок
-        if (node.left != null) {
-            changeParentChild(node.parent, node, node.left);
-            return node.left;
-        }
-        // Только правый
-        else if (node.right != null) {
-            changeParentChild(node.parent, node, node.right);
-            return node.right;
-        }
-        // Нет потомков
-        else {
-            Node newChild;
-            if (node.color == BLACK) {
-                newChild = new NilNode();
+            else if (parent.right == this) {
+                parent.right = newChild;
             }
             else {
-                newChild = null;
+                throw new IllegalStateException("Node is not a child of its parent");
             }
-            changeParentChild(node.parent, node, newChild);
-            return newChild;
-        }
-    }
 
-    private Node findMin(Node node) {
-        node = node.right;
-        while (node.left != null) {
-            node = node.left;
+            if (newChild != null) {
+                newChild.parent = parent;
+            }
         }
-        return node;
+
+        private void fixPropsAfterAddingNode() {
+            Node parent = this.parent;
+
+            // Нарушение 2-го правила КЧД - корень всегда черный
+            if (parent == null) {
+                this.color = BLACK;
+                return;
+            }
+
+            // Если родитель черный, то никаких исправлений не делаем
+            if (parent.color == BLACK) {
+                return;
+            }
+
+            Node grandparent = parent.parent;
+            Node uncle = this.getUncle();
+
+            // Нарушение 4-го правила (Красный родитель вставляемого узла), красный родитель и дядя
+            if (uncle != null && uncle.color == RED) {
+                // Перекрашиваем родителя, прародителя и дядю
+                parent.color = BLACK;
+                grandparent.color = RED;
+                uncle.color = BLACK;
+
+                // Т.к. прародитель красный, необходимо проверить его родителя
+                grandparent.fixPropsAfterAddingNode();
+            }
+
+            // Нарушение 4-го правила (Красный родитель вставляемого узла), родитель - левый потомок прародителя
+            else if (parent == grandparent.left) {
+                // Дядя - черный, и путь к вставляемому узлу от прародителя = left->right
+                if (this == parent.right) {
+                    parent.rotateLeft();
+
+                    // Указатель родителя устанавливаем на новый корневой элемент повернутого поддерева
+                    parent = this;
+                }
+
+                // Дядя - черный, и путь к вставляемому узлу от прародителя = left->left
+                grandparent.rotateRight();
+
+                // Перекрашиваем родителя и прародителя
+                parent.color = BLACK;
+                grandparent.color = RED;
+            }
+
+            // Нарушение 4-го правила (Красный родитель вставляемого узла), родитель - правый потомок прародителя
+            else {
+                // Дядя - черный, и путь к вставляемому узлу от прародителя = right->left
+                if (this == parent.left) {
+                    parent.rotateRight();
+
+                    // Указатель родителя устанавливаем на новый корневой элемент повернутого поддерева
+                    parent = this;
+                }
+
+                // Дядя - черный, и путь к вставляемому узлу от прародителя = right->right
+                grandparent.rotateLeft();
+
+                // Перекрашиваем родителя и прародителя
+                parent.color = BLACK;
+                grandparent.color = RED;
+            }
+        }
+
+        private Node getUncle() {
+            Node grandparent = this.parent.parent;
+
+            if (grandparent.left == this.parent) {
+                return grandparent.right;
+            }
+            else if (grandparent.right == this.parent) {
+                return grandparent.left;
+            }
+            else {
+                throw new IllegalStateException("Parent is not a child of its grandparent");
+            }
+        }
+
+        private void fixPropsAfterDeletingNode() {
+            // Нарушение 2-го правила КЧД - корень всегда черный
+            if (this == root) {
+                this.color = BLACK;
+                return;
+            }
+
+            // Далее следуют исправления если нарушено 5 правило КЧД
+            // (неодинаковое число черных узлов на пути к листам дерева)
+
+            Node sibling = this.getSibling();
+            // Случай если брат - красный
+            if (sibling.color == RED) {
+                this.handleRedSibling(sibling);
+                sibling = this.getSibling();
+            }
+
+            // Случай если брат черный и у него два черных потомка
+            if(isBlack(sibling.left) && isBlack(sibling.right)) {
+                sibling.color = RED;
+
+                // Если родитель красный
+                if (this.parent.color == RED) {
+                    this.parent.color = BLACK;
+                }
+                // Если родитель черный
+                else {
+                    this.parent.fixPropsAfterDeletingNode();
+                }
+            }
+
+            // Если брат черный и у него хотя бы один черный потомок
+            else {
+                this.handleBlackSiblings(sibling);
+            }
+        }
+
+        private void handleRedSibling (Node sibling) {
+            // Меняем цвет брата и родителя
+            sibling.color = BLACK;
+            this.parent.color = RED;
+
+            // И вращаем поддерево вокруг родителя
+            if (this == this.parent.right) {
+                this.parent.rotateRight();
+            }
+            else {
+                this.parent.rotateLeft();
+            }
+        }
+
+        // Нарушено 5 правило КЧД (неодинаковое число черных узлов на пути к листам дерева)
+        private void handleBlackSiblings (Node sibling) {
+            boolean nodeIsLeftChld = (this == this.parent.left);
+
+            // Случай если брат черный и он имеет хотя бы одного потомка, а также его племянник черный
+            if (nodeIsLeftChld && isBlack(sibling.right)) {
+                // Меняем цвет брата и его потомков
+                sibling.left.color = BLACK;
+                sibling.color = RED;
+                sibling.rotateRight();       // И вращаем поддерево в обратном направлении от удаляемого узла
+                sibling = this.parent.right;
+            }
+            // Если переданный узел правый потомок
+            else if (!nodeIsLeftChld && isBlack(sibling.left)){
+                sibling.right.color = BLACK;
+                sibling.color = RED;
+                sibling.rotateLeft();
+                sibling = this.parent.left;
+            }
+
+            // Случай если брат черный и он имеет хотя бы одного потомка, а также его племянник красный
+            // Меняем цвета брата и родителя
+            sibling.color = this.parent.color;
+            this.parent.color = BLACK;
+            if (nodeIsLeftChld) {
+                sibling.right.color = BLACK;
+                this.parent.rotateLeft();    // И вращаем поддерево в направлении удаляемого узла
+            }
+            else {
+                sibling.left.color = BLACK;
+                this.parent.rotateRight();
+            }
+        }
+
+        private Node getSibling () {
+            Node parent = this.parent;
+            if (this == parent.left) {
+                return parent.right;
+            }
+            else if (this == parent.right) {
+                return parent.left;
+            }
+            else {
+                throw new IllegalStateException("Parent is not a child of its grandparent");
+            }
+        }
+
+        private boolean isBlack(Node node) {
+            return node == null || node.color == BLACK;
+        }
+
+        private Node deleteNode () {
+            // У узла есть только левый потомок
+            if (this.left != null) {
+                this.changeParentChild(this.parent, this.left);
+                return this.left;
+            }
+            // Только правый
+            else if (this.right != null) {
+                this.changeParentChild(this.parent, this.right);
+                return this.right;
+            }
+            // Нет потомков
+            else {
+                Node newChild;
+                if (this.color == BLACK) {
+                    newChild = new NilNode();
+                }
+                else {
+                    newChild = null;
+                }
+                this.changeParentChild(this.parent, newChild);
+                return newChild;
+            }
+        }
+
+        private Node findMin() {
+            Node currNode = this.right;
+            while (currNode.left != null) {
+                currNode = currNode.left;
+            }
+            return currNode;
+        }
     }
 
 
