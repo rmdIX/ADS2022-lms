@@ -17,6 +17,7 @@ public class DFS {
         edges = Graph.edges;
         classification = new HashMap<>();
         pre = new int[9];
+        post = new int[9];
     }
     public void runDFS(Vertex start, Graph graph){
         pre[start.data - 65] = time++;
@@ -36,6 +37,8 @@ public class DFS {
                 }
             }
         }
+        post[start.data - 65] = time;
+        time++;
     }
     public Vertex findUnvisited(Graph graph){
         for (Vertex vertex: graph.vertices) {
@@ -74,13 +77,13 @@ public class DFS {
         for (List key: keys) {
             System.out.println(key.get(0) + " " + key.get(1) + classification.get(key));
         }
-        printPre();
+        printPrePost();
     }
 
-    public void printPre(){
-        for (int i: pre){
+    public void printPrePost(){
+        for (int i=0; i<9; i++){
             char vertex = (char) (i + 65);
-            System.out.println(vertex + " " + i);
+            System.out.println(vertex + " " + pre[i] + "/" + post[i]);
         }
     }
 }
