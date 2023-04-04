@@ -10,22 +10,131 @@ public class TaskA<E extends Comparable<E>>  implements NavigableSet<E> {
     //в нем также может быть поле элемента E. Далее на этой основе ожидается бинарное дерево.
 
     //Обязательные к реализации методы и конструкторы
+    private Node <E, Boolean> root = null;
     public TaskA() {
+
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (root == null) {
+            root = new Node<>(e, true);
+            return true;
+        } else if (root.getKey().equals(e)) {
+            return false;
+        }
+
+        Node<E, Boolean> loopPt = root;
+        while (true) {
+            if (loopPt.getKey().compareTo(e) > 0) {
+                //left
+                if (loopPt.getLeft() == null) {
+                    loopPt.setLeft(new Node<>(e, true));
+                    return true;
+                } else if (loopPt.getLeft().getKey().equals(e)) {
+                    return false;
+                } else {
+                    loopPt = loopPt.getLeft();
+                }
+            } else {
+                //right
+                if (loopPt.getRight() == null) {
+                    loopPt.setRight(new Node<>(e, true));
+                    return true;
+                } else if (loopPt.getRight().getKey().equals(e)) {
+                    return false;
+                } else {
+                    loopPt = loopPt.getRight();
+                }
+            }
+        }
+
+    }
+
+    private Node<E, Boolean> getMostLeft(Node<E, Boolean> root) {
+        Node<E, Boolean> loopPt = root;
+        while (loopPt.getLeft().getLeft() != null) {
+            loopPt = loopPt.getLeft();
+        }
+        Node<E, Boolean> returnPt = loopPt.getLeft();
+        loopPt.setLeft(returnPt.getRight());
+        return returnPt;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        E e = (E) o;
+//        if (root == null) return false;
+        Node<E, Boolean> loopPt = root, parentPt = null;
+
+        while (true) {
+            if (loopPt == null) return false;
+
+            if (loopPt.getKey().compareTo(e) > 0) {
+                //left
+                parentPt = loopPt;
+                loopPt = loopPt.getLeft();
+            } else if (loopPt.getKey().compareTo(e) < 0) {
+                parentPt = loopPt;
+                loopPt = loopPt.getRight();
+            } else {
+                if (loopPt.getLeft() == null && loopPt.getRight() == null) {
+                    //no children present
+                    if (parentPt == null) {
+                        root = null;
+                        return true;
+                    }
+
+                    if (parentPt.getLeft() != null && parentPt.getLeft().equals(loopPt)) {
+                        //isLeft
+                        parentPt.setLeft(null);
+                    } else if (parentPt.getRight() != null && parentPt.getRight().equals(loopPt)) {
+                        //isRight
+                        parentPt.setRight(null);
+                    }
+                } else if (loopPt.getRight() == null) {
+                    //only left child presents
+                    loopPt.setKey(loopPt.getLeft().getKey());
+                    loopPt.setRight(loopPt.getLeft().getRight());
+                    loopPt.setLeft(loopPt.getLeft().getLeft());
+                } else if (loopPt.getLeft() == null) {
+                    //only right child presents
+                    loopPt.setKey(loopPt.getRight().getKey());
+                    loopPt.setLeft(loopPt.getRight().getLeft());
+                    loopPt.setRight(loopPt.getRight().getRight());
+                } else {
+                    //both children present
+                    if (loopPt.getRight().getLeft() == null) {
+                        loopPt.setKey(loopPt.getRight().getKey());
+                        loopPt.setRight(loopPt.getRight().getRight());
+                    } else {
+                        Node<E, Boolean> mostLeft = getMostLeft(loopPt.getRight());
+                        loopPt.setKey(mostLeft.getKey());
+                    }
+                }
+                return true;
+            }
+        }
+    }
+
+    private void traversal(StringBuilder appendStr, Node<E, Boolean> node) {
+        if (node != null) {
+            traversal(appendStr, node.getLeft());
+            appendStr.append(node.getKey().toString());
+            appendStr.append(", ");
+            traversal(appendStr, node.getRight());
+        }
     }
 
     @Override
     public String toString() {
-        return null;
+        if (root == null) return "[]";
+        StringBuilder resultStr = new StringBuilder();
+        resultStr.append("[");
+        traversal(resultStr, root);
+        resultStr.delete(resultStr.length()-1-1, resultStr.length());
+        resultStr.append("]");
+        return resultStr.toString();
     }
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
