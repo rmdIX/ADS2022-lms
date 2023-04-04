@@ -62,18 +62,18 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
 
     @Override
     public boolean remove(Object o) {
-        Node currNode = root;
+        Node currentNode = root;
         E oCast = (E) o;
-        while (currNode != null && !oCast.equals(currNode.data)) {
-            if (oCast.compareTo(currNode.data) < 0) {
-                currNode = currNode.left;
+        while (currentNode != null && !oCast.equals(currentNode.data)) {
+            if (oCast.compareTo(currentNode.data) < 0) {
+                currentNode = currentNode.left;
             }
             else {
-                currNode = currNode.right;
+                currentNode = currentNode.right;
             }
         }
 
-        if (currNode == null) {
+        if (currentNode == null) {
             return false;
         }
 
@@ -81,15 +81,15 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
         boolean deletedNodeColor;
 
         // У узла нет потомков или есть только один
-        if (currNode.left == null || currNode.right == null) {
-            replacerNode = currNode.deleteNode();
-            deletedNodeColor = currNode.color;
+        if (currentNode.left == null || currentNode.right == null) {
+            replacerNode = currentNode.deleteNode();
+            deletedNodeColor = currentNode.color;
         }
 
         // Есть два потомка
         else {
-            Node inorderSuccessor = currNode.findMin();
-            currNode.data = inorderSuccessor.data;
+            Node inorderSuccessor = currentNode.findMin();
+            currentNode.data = inorderSuccessor.data;
 
             replacerNode = inorderSuccessor.deleteNode();
             deletedNodeColor = inorderSuccessor.color;
@@ -112,7 +112,7 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
     @Override
     public String toString() {
         if (root == null)
-            return "";
+            return "[]";
 
         StringBuilder str = new StringBuilder();
         str.append("[");
@@ -138,6 +138,21 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
     }
 
     public boolean contains(Object o) {
+        Node currentNode = root;
+        E oCast = (E) o;
+
+        while (currentNode != null) {
+            if (oCast.compareTo(currentNode.data) < 0) {
+                currentNode = currentNode.left;
+            }
+            else if (oCast.compareTo(currentNode.data) > 0) {
+                currentNode = currentNode.right;
+            }
+            else {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -148,27 +163,38 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
 
     @Override
     public void clear() {
-
+        root = null;
+        treeSize = 0;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return treeSize == 0;
     }
 
     @Override
     public int size() {
-        return 0;
+        return treeSize;
     }
 
     @Override
     public E first() {
-        return null;
+        Node currentNode = root;
+        while(currentNode.left != null) {
+            currentNode = currentNode.left;
+        }
+
+        return currentNode.data;
     }
 
     @Override
     public E last() {
-        return null;
+        Node currentNode = root;
+        while(currentNode.right != null) {
+            currentNode = currentNode.right;
+        }
+
+        return currentNode.data;
     }
 
 
@@ -176,16 +202,6 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
     ////////    Классы узла и методы работы с ним    ////////
     /////////////////////////////////////////////////////////
 
-
-    // В случае удаления узла, у которого потомки = NIL,
-    // один из них занимает место удаляемого узла, поэтому для перехода к родителю этого NIL-узла
-    // необходим специальный узел-заглушка
-    private class NilNode extends Node {
-        private NilNode() {
-            super();
-            this.color = BLACK;
-        }
-    }
 
     private class Node {
         Node left, right, parent;
@@ -448,11 +464,21 @@ public class TaskB<E extends Comparable<E>> implements NavigableSet<E> {
         }
 
         private Node findMin() {
-            Node currNode = this.right;
-            while (currNode.left != null) {
-                currNode = currNode.left;
+            Node currentNode = this.right;
+            while (currentNode.left != null) {
+                currentNode = currentNode.left;
             }
-            return currNode;
+            return currentNode;
+        }
+    }
+
+    // В случае удаления узла, у которого потомки = NIL,
+    // один из них занимает место удаляемого узла, поэтому для перехода к родителю этого NIL-узла
+    // необходим специальный узел-заглушка
+    private class NilNode extends Node {
+        private NilNode() {
+            super();
+            this.color = BLACK;
         }
     }
 
