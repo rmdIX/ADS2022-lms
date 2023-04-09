@@ -26,8 +26,18 @@ public class ListB<T> {
         list = newList;
     }
 
-    public boolean addAll(List<?> c){
-        return false;
+    public boolean addAll(List<T> c){
+        size += c.size();
+        T[] newList = (T[]) new Object[size];
+        System.arraycopy(list, 0, newList, 0, count);
+        T[] temp = (T[]) new Object[c.size()];
+        for (int i=0; i<c.size(); i++){
+            temp[i] = c.get(i);
+        }
+        System.arraycopy(temp, 0, newList, count, c.size());
+        count += c.size();
+        list = newList;
+        return true;
     }
 
     public T remove(int index){
