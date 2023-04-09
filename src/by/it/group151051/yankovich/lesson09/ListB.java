@@ -1,5 +1,7 @@
 package by.it.group151051.yankovich.lesson09;
 
+import java.util.List;
+
 public class ListB<T> {
     private int size = 10;
     private T[] list;
@@ -32,6 +34,12 @@ public class ListB<T> {
             throw new IndexOutOfBoundsException();
         }
         return list[index];
+    }
+
+    public T set(int index, T e){
+        T result = list[index];
+        list[index] = e;
+        return result;
     }
 
     @Override
