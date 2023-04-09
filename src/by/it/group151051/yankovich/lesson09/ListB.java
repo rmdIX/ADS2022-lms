@@ -16,6 +16,20 @@ public class ListB<T> {
         list[count++] = value;
     }
 
+    public void add(int index, T e){
+        size += 1;
+        T[] newList = (T[]) new Object[size];
+        System.arraycopy(list, 0, newList, 0, index);
+        newList[index] = e;
+        System.arraycopy(list, index, newList, index+1, list.length-index);
+        count++;
+        list = newList;
+    }
+
+    public boolean addAll(List<?> c){
+        return false;
+    }
+
     public T remove(int index){
         if (index < 0 || index > count){
             throw new IndexOutOfBoundsException();
@@ -37,6 +51,9 @@ public class ListB<T> {
     }
 
     public T set(int index, T e){
+        if (index < 0 || index > count){
+            throw new IndexOutOfBoundsException();
+        }
         T result = list[index];
         list[index] = e;
         return result;
