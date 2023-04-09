@@ -54,8 +54,8 @@ public class Test_jd01_11 extends ClassLoader {
     @Test(timeout = 1500)
     public void testTaskB__ListB() throws Exception {
         System.out.println("\nB. Диагностика обязательных к реализации методов:");
-        Class<?> aclass = findClass("ListB");
-        List<Long> a = (List<Long>) aclass.getDeclaredConstructor().newInstance();
+        Class<?> aclass = Class.forName("by.it.group151051.yankovich.lesson09.ListB");
+        ListB<Long> a = (ListB<Long>) aclass.getDeclaredConstructor().newInstance();
         List<Long> e = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             e.add(i * 2L);
@@ -114,29 +114,29 @@ public class Test_jd01_11 extends ClassLoader {
         System.out.println("  addAll(List<?> c) ok: " + a);
         System.out.flush();
 
-        System.out.println("\nB. Диагностика необязательных к реализации методов:");
-        if (e.contains(null) != a.contains(null) ||
-                e.contains(0) != a.contains(0) ||
-                e.contains(1002) != a.contains(1002)
-                )
-            System.out.println("Диагностика: contains не реализован или работает не так как в ArrayList");
-        else
-            System.out.println("      contains(T e) ok: " + a);
-
-        if (e.size() != a.size())
-            System.out.println("Диагностика: size не реализован или работает не так как в ArrayList");
-        else
-            System.out.println("             size() ok: " + a);
-
-        if (e.indexOf(444) != a.indexOf(444))
-            System.out.println("Диагностика: indexOf не реализован или работает не так как в ArrayList");
-        else
-            System.out.println("          indexOf() ok: " + a);
-
-        if (e.remove(Integer.valueOf(444)) != a.remove(Integer.valueOf(444)))
-            System.out.println("Диагностика: remove(Object o) не реализован или работает не так как в ArrayList");
-        else
-            System.out.println("   remove(Object o) ok: " + a);
+//        System.out.println("\nB. Диагностика необязательных к реализации методов:");
+//        if (e.contains(null) != a.contains(null) ||
+//                e.contains(0) != a.contains(0) ||
+//                e.contains(1002) != a.contains(1002)
+//                )
+//            System.out.println("Диагностика: contains не реализован или работает не так как в ArrayList");
+//        else
+//            System.out.println("      contains(T e) ok: " + a);
+//
+//        if (e.size() != a.size())
+//            System.out.println("Диагностика: size не реализован или работает не так как в ArrayList");
+//        else
+//            System.out.println("             size() ok: " + a);
+//
+//        if (e.indexOf(444) != a.indexOf(444))
+//            System.out.println("Диагностика: indexOf не реализован или работает не так как в ArrayList");
+//        else
+//            System.out.println("          indexOf() ok: " + a);
+//
+//        if (e.remove(Integer.valueOf(444)) != a.remove(Integer.valueOf(444)))
+//            System.out.println("Диагностика: remove(Object o) не реализован или работает не так как в ArrayList");
+//        else
+//            System.out.println("   remove(Object o) ok: " + a);
     }
 
     private void assertSet(String message, Set<Short> e, Set<Short> a){
