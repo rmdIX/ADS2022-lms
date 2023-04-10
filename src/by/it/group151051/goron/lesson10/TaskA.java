@@ -99,7 +99,7 @@ public class TaskA<E extends Comparable<E>> implements NavigableSet<E> {
             assert replacerNode != null;
             replacerNode.fixPropsAfterDeletingNode();
 
-            // Remove the temporary NIL node
+            // Удаление дополнительного узла-заглушки NilNode
             if (replacerNode.getClass() == NilNode.class) {
                 replacerNode.changeParentChild(replacerNode.parent, null);
             }
