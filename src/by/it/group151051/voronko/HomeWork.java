@@ -1,4 +1,4 @@
-package by.it;
+package by.it.group151051.voronko;
 
 import java.io.*;
 import java.util.ArrayList;
