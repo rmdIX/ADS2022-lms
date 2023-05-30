@@ -1,19 +1,26 @@
 package by.it;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class HomeWork {
-    String PACKAGE = "by.it.group151051.voronko.lesson09";
+    String PACKAGE = "by.it.group151051.voronko";
 
     public Set<Class> findAllClassesUsingClassLoader(String packageName) {
-        InputStream stream = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream(packageName.replaceAll("[.]", "/"));
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        var pkg = findPackageNamesStartingWith(PACKAGE).get(0);
+
+        var stream = ClassLoader.getSystemClassLoader()
+                .getResourceAsStream(pkg.replaceAll("[.]", "/"));
+        var reader = new BufferedReader(new InputStreamReader(stream));
         return reader.lines()
                 .filter(line -> line.endsWith(".class"))
-                .map(line -> getClass(line, packageName))
+                .map(line -> getClass(line, pkg))
                 .collect(Collectors.toSet());
     }
 
@@ -30,5 +37,12 @@ public class HomeWork {
     public Class findClass(String name){
         var classes = findAllClassesUsingClassLoader(PACKAGE);
         return classes.stream().filter(c -> c.getSimpleName().equals(name)).findFirst().orElse(null);
+    }
+
+    public List<String> findPackageNamesStartingWith(String prefix) {
+        return Arrays.stream(Package.getPackages())
+                .map(Package::getName)
+                .filter(n -> n.startsWith(prefix))
+                .collect(toList());
     }
 }
