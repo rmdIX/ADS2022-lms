@@ -1,7 +1,7 @@
 package by.it.group151051.voronko.lesson09;
 
 
-import by.it.HomeWork;
+import by.it.group151051.voronko.HomeWork;
 import org.junit.Test;
 import org.junit.jupiter.api.Timeout;
 
