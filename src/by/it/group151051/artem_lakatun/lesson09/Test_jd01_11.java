@@ -1,7 +1,7 @@
-package by.it.a_khmelev.lesson09;
+package by.it.group151051.artem_lakatun.lesson09;
 
 
-import by.it.HomeWork;
+import java.lang.ClassLoader;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,19 +9,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.sun.beans.finder.ClassFinder.findClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @SuppressWarnings("all")
 
 //поставьте курсор на следующую строку и нажмите Ctrl+Shift+F10
-public class Test_jd01_11 extends HomeWork {
+public class Test_jd01_11 extends ClassLoader {
 
 
     @Test(timeout = 1500)
     public void testTaskA__ListA() throws Exception {
         System.out.println("\nA. Диагностика обязательных к реализации методов:");
-        Class<?> aclass = findClass("ListA");
+        Class<?> aclass = Class.forName("by.it.group151051.artem_lakatun.lesson09.ListA");
         List<Integer> a = (List<Integer>) aclass.getDeclaredConstructor().newInstance();
         List<Integer> e = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -53,7 +54,7 @@ public class Test_jd01_11 extends HomeWork {
     @Test(timeout = 1500)
     public void testTaskB__ListB() throws Exception {
         System.out.println("\nB. Диагностика обязательных к реализации методов:");
-        Class<?> aclass = findClass("ListB");
+        Class<?> aclass = Class.forName("by.it.group151051.artem_lakatun.lesson09.ListB");
         List<Long> a = (List<Long>) aclass.getDeclaredConstructor().newInstance();
         List<Long> e = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -153,7 +154,7 @@ public class Test_jd01_11 extends HomeWork {
     @Test(timeout = 1500)
     public void testTaskC__SetC() throws Exception {
         System.out.println("\nC. Диагностика обязательных к реализации методов:");
-        Class<?> aclass = findClass("SetC");
+        Class<?> aclass = Class.forName("by.it.group151051.artem_lakatun.lesson09.SetC");
         Set<Short> a = (Set<Short>) aclass.getDeclaredConstructor().newInstance();
         Set<Short> e = new HashSet<>();
         for (int i = 0; i < 10; i++) {

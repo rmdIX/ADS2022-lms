@@ -1,5 +1,6 @@
 package by.it.a_khmelev.lesson03;
 
+import by.it.group151051.artem_lakatun.lesson03.B_Huffman;
 import org.junit.Test;
 
 import java.io.File;
