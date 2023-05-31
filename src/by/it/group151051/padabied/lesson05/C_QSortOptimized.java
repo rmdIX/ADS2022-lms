@@ -33,7 +33,7 @@ import java.util.Scanner;
 public class C_QSortOptimized {
 
     //отрезок
-    private class Segment  implements Comparable{
+    private class Segment  implements Comparable<C_QSortOptimized.Segment>{
         int start;
         int stop;
 
@@ -43,39 +43,28 @@ public class C_QSortOptimized {
         }
 
         @Override
-        public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+        public int compareTo(Segment o) {
+            return Integer.compare(this.stop, o.start);
         }
     }
 
 
-    int[] getAccessory2(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+    int[] getAccessory2(InputStream stream) {
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //число отрезков отсортированного массива
         int n = scanner.nextInt();
         Segment[] segments=new Segment[n];
-        //число точек
         int m = scanner.nextInt();
         int[] points=new int[m];
         int[] result=new int[m];
 
-        //читаем сами отрезки
         for (int i = 0; i < n; i++) {
-            //читаем начало и конец каждого отрезка
             segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
         }
-        //читаем точки
         for (int i = 0; i < n; i++) {
             points[i]=scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
