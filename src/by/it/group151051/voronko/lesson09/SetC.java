@@ -1,0 +1,225 @@
+package by.it.group151051.voronko.lesson09;
+
+import java.util.*;
+
+public class SetC<T> implements Set {
+    int capacity = 0, size = 0;
+    private T[] elements;
+
+    public SetC(){
+        elements = (T[])new Object[capacity];
+    }
+    public boolean add(Object a){
+        if(!this.contains((T)a)) {
+            if(size+1 > capacity) extend(1);
+            elements[size] = (T) a;
+            size++;
+            return true;
+        }
+        return false;
+    }
+    public Object remove(int index){
+        if(index < size) {
+            capacity--;
+            T[] elements_copy = (T[])new Object[capacity];
+            T removedElement = null;
+            for(int i = 0, j = 0; i < size; i++, j++) {
+                if(i == index) {
+                    j--;
+                    removedElement = elements[i];
+                    continue;
+                };
+                elements_copy[j] = elements[i];
+            }
+            elements = elements_copy;
+            size--;
+            return removedElement;
+        }
+        return null;
+    }
+
+    public int indexOf(Object o) {
+        for(int i = 0; i < size; i++) {
+            if(elements[i] == o) return i;
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    public ListIterator listIterator() {
+        return null;
+    }
+
+    public ListIterator listIterator(int index) {
+        return null;
+    }
+
+    public List subList(int fromIndex, int toIndex) {
+        return null;
+    }
+
+    public int size() {
+        int count = 0;
+        for(var item : elements) {
+            count++;
+        }
+        return count;
+    }
+
+    public boolean isEmpty() {
+        for(var item : elements){
+            if(item != null) return false;
+        }
+        return true;
+    }
+
+    public boolean contains(Object o) {
+        for(var item : elements){
+            if(item == (T)o || (item != null && item.equals((T)o))) return true;
+        }
+        return false;
+    }
+
+    public Iterator iterator() {
+        return null;
+    }
+
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    public boolean remove(Object o) {
+        if(this.contains(o)) {
+            capacity--;
+            T[] elements_copy = (T[]) new Object[capacity];
+            for (int i = 0, j = 0; i < size; i++, j++) {
+                if (elements[i] == o) {
+                    j--;
+                    continue;
+                }
+                ;
+                elements_copy[j] = elements[i];
+            }
+            elements = elements_copy;
+            size--;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAll(Collection c) {
+        var arr = c.toArray();
+        int index = size;
+        for(var item : c){
+            if(!this.contains((T)item)){
+                extend(1);
+                elements[index] = (T)item;
+                index++;
+                size++;
+            }
+        }
+        for(int i = size, j = 0; j < c.size(); j++){
+            if(!this.contains(arr[j])){
+                extend(1);
+                elements[i] = (T)arr[j];
+                size++;
+                i++;
+            }
+        }
+        return true;
+    }
+
+    public boolean addAll(int index, Collection c) {
+        return false;
+    }
+
+    public void clear() {
+        var new_set = new SetC<T>();
+        this.capacity = new_set.capacity;
+        this.size = new_set.size;
+        this.elements = new_set.elements;
+    }
+
+    public boolean equals(Object o) {
+        return false;
+    }
+
+    public int hashCode() {
+        return 0;
+    }
+
+    public boolean retainAll(Collection c) {
+        return false;
+    }
+
+    public boolean removeAll(Collection c) {
+        boolean res = false;
+        for(var item : c){
+            res = this.remove(item);
+        }
+        return res;
+    }
+
+    public boolean containsAll(Collection c) {
+        for(var item : c) {
+            if(!this.contains(item)) return false;
+        }
+        return true;
+    }
+
+    public Object[] toArray(Object[] a) {
+        return new Object[0];
+    }
+
+    public T get(int index){
+        return elements[index];
+    }
+
+    public Object set(int index, Object element) {
+        var element_at_index = elements[index];
+        elements[index] = (T)element;
+        return element_at_index;
+    }
+
+    public void add(int index, Object element) {
+        extend(1);
+        for(int i = size; i > index; i--){
+            elements[i] = elements[i-1];
+        }
+        elements[index] = (T)element;
+        size++;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        for(T item : elements) {
+//            if(item != null) {
+                if(!sb.toString().equals("[")) sb.append(", ");
+                sb.append(item);
+//            }
+        }
+        sb.append(']');
+        return sb.toString();
+    }
+    private void extend(int added_capacity) {
+        for(int i = 0; i < added_capacity; i++) capacity++;
+        T[] elements_copy = (T[])new Object[capacity];
+        for(int i = 0; i < size; i++) {
+            elements_copy[i] = elements[i];
+        }
+        elements = elements_copy;
+    }
+
+    private void reduce() {
+        capacity--;
+        T[] elements_copy = (T[])new Object[capacity];
+        for(int i = 0; i < size-1; i++) {
+            elements_copy[i] = elements[i];
+        }
+        elements = elements_copy;
+    }
+}
