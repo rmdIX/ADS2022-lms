@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson10;
+package by.it.group151051.krupovich.lesson10;
 
 import java.util.*;
 
