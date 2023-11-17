@@ -39,13 +39,70 @@ public class B_MergeSort {
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
 
 
-
-
-
+        a = mergesort(a);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
+
+    public int[] mergesort (int[] a){
+
+        if(a.length == 1) {
+            return a;
+        }
+        int length = a.length/2;
+        int[] ArrayOne = new int[length];
+        for(int i = 0; i < a.length/2; i++){
+            ArrayOne[i] = a[i];
+        }
+        int[] ArrayTwo = new int[a.length - length];
+        int index = 0;
+        for(int i = length; i < a.length; i++) {
+            ArrayTwo[index] = a[i];
+            index++;
+        }
+
+        ArrayOne = mergesort(ArrayOne);
+        ArrayTwo = mergesort(ArrayTwo);
+
+        return merge(ArrayOne,ArrayTwo);
+    }
+
+    public int[] merge (int[] ArrayOne, int[] ArrayTwo){
+        int[] result = new int[ArrayOne.length + ArrayTwo.length];
+
+        int i = 0;
+        int j = 0;
+        int index = 0;
+        while(ArrayOne.length != i && ArrayTwo.length != j){
+            if(ArrayOne[i] > ArrayTwo[j]){
+                result[index] = ArrayTwo[j];
+                index++;
+                j++;
+            } else {
+                result[index] = ArrayOne[i];
+                index++;
+                i++;
+            }
+        }
+
+        while(ArrayOne.length != i) {
+            result[index] = ArrayOne[i];
+            index++;
+            i++;
+        }
+
+        while(ArrayTwo.length != j){
+            result[index] = ArrayTwo[j];
+            index++;
+            j++;
+        }
+
+        return result;
+    }
+
+
+
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson04/dataB.txt");

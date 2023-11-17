@@ -3,7 +3,11 @@ package by.it.group251051.smalianko.lesson04;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
 Рассчитать число инверсий одномерного массива.
@@ -33,6 +37,7 @@ Sample Output:
 */
 
 
+
 public class C_GetInversions {
 
     int calc(InputStream stream) throws FileNotFoundException {
@@ -50,21 +55,59 @@ public class C_GetInversions {
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
 
-
-
-
-
-
+        result = mergeSortAndCount(a, 0, a.length-1);
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    private static int mergeAndCount(int[] arr, int l,
+                                     int m, int r)
+    {
+        int[] left = Arrays.copyOfRange(arr, l,
+                m + 1);
+        int[] right = Arrays.copyOfRange(arr, m + 1,
+                r + 1);
+
+        int i = 0, j = 0, k = l, swaps = 0;
+
+        while (i < left.length && j < right.length)
+        {
+            if (left[i] <= right[j])
+                arr[k++] = left[i++];
+            else
+            {
+                arr[k++] = right[j++];
+                swaps += (m + 1) - (l + i);
+            }
+        }
+        while (i < left.length)
+            arr[k++] = left[i++];
+        while (j < right.length)
+            arr[k++] = right[j++];
+        return swaps;
+    }
+    private static int mergeSortAndCount(int[] arr,
+                                         int l, int r)
+    {
+        int count = 0;
+
+        if (l < r) {
+            int m = (l + r) / 2;
+            count += mergeSortAndCount(arr, l, m);
+            count += mergeSortAndCount(arr, m + 1, r);
+            count += mergeAndCount(arr, l, m, r);
+        }
+
+        return count;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
+
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson04/dataC.txt");
+
         C_GetInversions instance = new C_GetInversions();
         //long startTime = System.currentTimeMillis();
         int result = instance.calc(stream);
