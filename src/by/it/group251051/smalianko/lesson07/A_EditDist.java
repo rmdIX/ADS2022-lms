@@ -44,9 +44,26 @@ public class A_EditDist {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-        int result = 0;
+
+
+        int result = getDist(one.length(), two.length(), one, two);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    int getMin(int a, int b, int c) {
+        return Integer.min(a, Integer.min(b, c));
+    }
+
+    int getDist(int i, int j, String one, String two) {
+        if (i == 0) {
+            return j;
+        }
+        if (j == 0) {
+            return i;
+        }
+        int tmp = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+        return getMin(getDist(i - 1, j, one, two) + 1, getDist(i, j - 1, one, two) + 1, getDist(i - 1, j - 1, one, two) + tmp);
     }
 
 
