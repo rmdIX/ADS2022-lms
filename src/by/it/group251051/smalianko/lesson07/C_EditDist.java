@@ -3,6 +3,7 @@ package by.it.group251051.smalianko.lesson07;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -51,11 +52,99 @@ public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int onelength = one.length();
+        int twolength = two.length();
+
+        int[][] matr = new int[onelength + 1][twolength + 1];
+
+        matr[0][0] = 0;
 
 
-        String result = "";
+        for(int j = 1; j < onelength + 1; j++) {
+            matr[j][0] = j;
+        }
+        for (int i = 1; i < twolength +1; i++) {
+            matr[0][i] = i;
+        }
+
+        for(int i = 1; i <= onelength; i++) {
+            for(int j = 1; j <= twolength; j++) {
+                int tmp = (one.charAt(i - 1 ) == two.charAt(j - 1)) ? 0 : 1;
+                matr[i][j] = Math.min((matr[i-1][j-1] + tmp), Math.min((matr[i][j-1] + tmp), (matr[i-1][j] + tmp)));
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        int i = onelength;
+        int j = twolength;
+
+
+//        while (i > 0 && j > 0) {
+//            int diagonal = matr[i - 1][j - 1];
+//            int vertical = matr[i - 1][j];
+//            int horizontal = matr[i][j - 1];
+//            int current = matr[i][j];
+//            if (diagonal <= Math.min(horizontal, vertical) && ((diagonal == current) || (diagonal == current-1))){
+//                i--;
+//                j--;
+//                if(diagonal < current){
+//                    result.insert(0,"~" + two.charAt(j) + " ");
+//                } else {
+//                    result.insert(0, "# ");
+//                }
+//            } else if (horizontal <= vertical && ((horizontal == current) || (horizontal == current-1))){
+//                j--;
+//                result.insert(0,"+" + two.charAt(j) + " ");
+//            } else {
+//                i--;
+//                result.insert(0,"-" + one.charAt(i) + " ");;
+//            }
+//        }
+
+
+        while (i != 0 || j != 0){
+            if (i > 0 && j > 0 && matr[i - 1][j - 1] + (one.charAt(i - 1) == two.charAt(j - 1) ? 0 : 1) == matr[i][j]){
+                if(one.charAt(i - 1) == two.charAt(j - 1)){
+                    result.insert(0, "#,");
+                }else {
+                    result.insert(0, "~" + two.charAt(j - 1) + ",");
+                }
+                i--;
+                j--;
+            } else if (j > 0 && matr[i][j] == matr[i][j - 1] + 1) {
+                result.insert(0, "+" + two.charAt(j - 1) + ",");
+                j--;
+            } else if ( i > 0 && matr[i][j] == matr[i - 1][j] + 1) {
+                result.insert(0, "-" + one.charAt(i - 1) + ",");
+                i--;
+            }
+        }
+
+        return result.toString();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        //return result.toString();
     }
 
 
