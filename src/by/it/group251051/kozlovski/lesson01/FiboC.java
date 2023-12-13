@@ -21,12 +21,55 @@ public class FiboC {
         System.out.printf("fasterC(%d)=%d \n\t time=%d \n\n", n, fibo.fasterC(n, m), fibo.time());
     }
 
+    public static long pisano(long m){ // функция нахождения периода Пизано
+
+        long prev = 0;
+        long curr = 1;
+        long leng = 0;
+
+        for(int i = 0; i<m*m; i++){
+
+            long temp = 0;
+            temp = curr;
+            curr = (prev+curr) % m;
+            prev = temp;
+
+            if(prev == 0 && curr==1){
+                leng = i+1;
+            }
+        }
+
+
+        return leng;
+    }
+
     long fasterC(long n, int m) {
         //Решение сложно найти интуитивно
         //возможно потребуется дополнительный поиск информации
         //см. период Пизано
-        return 0L;
+
+        long pisano_period = pisano(m);
+
+        n= n % pisano_period;
+
+        long prev = 0;
+        long curr = 1;
+
+        if(n==0) return 0;
+        if(n==1) return 1;
+
+        for(int i = 0; i<m*m; i++){
+
+            long temp = 0;
+            temp = curr;
+            curr = (prev+curr) % m;
+            prev = temp;
+
+        }
+
+        return curr % m;
     }
+
 
 
 }
