@@ -2,6 +2,7 @@ package by.it.group251051.kozlovski.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 /*
 даны интервальные события events
 реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
@@ -41,6 +42,7 @@ public class B_Sheduler {
     }
 
     List<Event> calcStartTimes(Event[] events, int from, int to) {
+
         //events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
@@ -49,7 +51,34 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
 
+        int temp_from = from;//запоминаем начало периода
 
+        ArrayList<Event> Sorted_Array = new ArrayList<>();
+        //создаем список для отсортированных событий
+        for(Event i:events){// проходим по всему списку, сравнивая события
+            for(Event j:events){
+
+                if(from <= to){ //если начало периода меньше или совпадает с концом
+                    if(from == j.stop){ //если начало периода сравнения совпадает с концом события
+                        Sorted_Array.add(j); // добавляем событие в отсортированный список
+
+                    }
+                }
+            }
+            from++;//увеличиваем начало периода
+        }
+
+        from = temp_from;// обнуляем значение начало периода
+        int i = 0;// обнуляем значение индекса
+
+        for(Event event:Sorted_Array){ //пока не закончится отсортированный список
+            if(Sorted_Array.get(i).start >= from){
+                // если и-тое значение начала события больше или совпадает с началом периода
+                result.add(Sorted_Array.get(i)); //записываем в итоговый массив и-тый элемент отсортированного списка
+                from = Sorted_Array.get(i).stop; // меняем значение начала периода на конец и-того события
+            }
+            i++; //инкрементируем индекс
+        }
 
 
 
