@@ -2,6 +2,8 @@ package by.it.group251051.kozlovski.lesson03;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -51,6 +53,25 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        //считываем символы и соответствующие им двоичный код из файла
+        Map<Integer,Character> map = new HashMap<>();
+        for(int i=0; i < count; i++){
+            char temp = scanner.next().charAt(0);
+            int temp_int = scanner.nextInt();
+            map.put(temp_int,temp);
+
+        }
+
+        String code = scanner.next(); // считываем строчку двоичного кода для раскодировки
+        StringBuilder pref = new StringBuilder(); // для записи новой строки создаем строку StringBuilder
+
+        for(int i=0; i < code.length(); i++){ //ока не закончиться строка
+            pref.append(code.charAt(i)); // обновляем и-тый символ
+            if(map.containsKey(Integer.valueOf(pref.toString()))){ // если код символа соответствует в строке pref
+                result.append(map.get(Integer.valueOf(pref.toString()))); // записываем символ в результат
+                pref = new StringBuilder(); // обновляем StringBuilder, чтобы не было повторной записи
+            }
+        }
 
 
 
