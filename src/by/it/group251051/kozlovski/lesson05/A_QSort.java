@@ -43,8 +43,13 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop){
-            this.start = start;
-            this.stop = stop;
+            if(start < stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
         }
@@ -53,7 +58,7 @@ public class A_QSort {
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
 
-            return 0;
+            return Integer.compare(this.start, o.start);
         }
     }
 
@@ -82,11 +87,48 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments,0,segments.length-1); // быстрая сортировка
 
-
+        for (int i =0; i< segments.length; i++){
+            for(int j = 0; j< points.length; j++){ // сравниваем сегменты с точками и выводим результат
+                if (segments[i].start <= points[j] && segments[i].stop >= points[j]){
+                    result[j] += 1;
+                } else {
+                    result[j] += 0;
+                }
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    public void quickSort(Segment array[], int low, int high){
+
+        if(low < high){ // если начало отрезка меньше конца
+            int Divide_index = Divide(array,low,high); // найдем точку раздела
+
+            quickSort(array, low, Divide_index-1);//сортировка половин отрезков(рекурсия)
+            quickSort(array,Divide_index+1, high);
+        }
+    }
+
+    private int Divide(Segment array[], int low,int high){ // функция раздела
+        Segment segment = array[low]; // получаем первый отрезок
+        int j =(low-1); //индекс точки раздела
+        for (int i = low; i < high; i++){ //пока не кончаться элементы
+            if(array[i].compareTo(segment) <= 0){ //сравниваем элементы массива
+                j++;// перемещаем точку раздела в середину и размещаем меньшие элементы до него, большие - после
+                Segment swap = array[j];
+                array[j] = array[i];
+                array[i] = swap;
+            }
+        }
+        Segment swap = array[j+1];
+        array[j+1] = array[high];
+        array[high] = swap;
+
+        return j+1;
     }
 
 

@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
+
+
 
 /*
 Рассчитать число инверсий одномерного массива.
@@ -35,6 +38,8 @@ Sample Output:
 
 public class C_GetInversions {
 
+    private static int inverceCount;
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -50,8 +55,8 @@ public class C_GetInversions {
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
 
-
-
+        a = Merge_sort(a);
+        result = inverceCount;
 
 
 
@@ -60,6 +65,45 @@ public class C_GetInversions {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
+
+    public static int[] Merge_sort(int[] a){
+        inverceCount = 0;
+        if(a.length == 1){
+            return a;
+        }
+       int mid_point = a.length / 2;
+        return Merge(Merge_sort(Arrays.copyOfRange(a,0,mid_point)),Merge_sort(Arrays.copyOfRange(a,mid_point,a.length)));
+    }
+
+    static int[] Merge(int[] b, int[] c){
+
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+
+        int[] merged = new int[b.length + c.length];
+
+        while (i < b.length && j < c.length){
+            if(b[i] <= c[j])
+                merged[k++] = b[i++];
+            else {
+                merged[k++] = c[j++];
+                inverceCount += (b.length - i);
+            }
+        }
+
+        while(i < b.length)
+            merged[k++] = b[i++];
+
+        while (j < c.length)
+            merged[k++] = c[j++];
+
+        return merged;
+
+    }
+
+
 
 
     public static void main(String[] args) throws FileNotFoundException {

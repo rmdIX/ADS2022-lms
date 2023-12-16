@@ -33,19 +33,24 @@ import java.util.Scanner;
 public class C_QSortOptimized {
 
     //отрезок
-    private class Segment  implements Comparable{
+    private class Segment implements Comparable<Segment>{
         int start;
         int stop;
 
         Segment(int start, int stop){
-            this.start = start;
-            this.stop = stop;
+            if (start < stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(Segment next) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            return Integer.compare(this.start, next.start);
         }
     }
 
@@ -68,14 +73,70 @@ public class C_QSortOptimized {
             segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
         }
         //читаем точки
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             points[i]=scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments,0,segments.length-1); //быстрая сортировка
+        for (int i = 0; i < segments.length; i++) { // сравниваем сегменты с точками и выводим результат
+            for (int j = 0; j < points.length; j++) {
+                if (segments[i].start <= points[j] && segments[i].stop >= points[j]) {
+                    result[j] += 1;
+                } else {
+                    result[j] += 0;
+                }
+            }
+        }
+
+
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        return result;
+    }
+
+    public void quickSort(Segment array[], int low, int high) {
+        while(low < high) {
+            int[] Divide_Index = Divide(array, low, high); // найдем точку раздела
+            int left = Divide_Index[0];
+            int right = Divide_Index[1];
+            quickSort(array, low, left);
+            low = right;
+        }
+    }
+
+    private int[] Divide(Segment array[], int low, int high) { // функция раздела
+        Segment segment = array[low]; // получаем первый отрезок
+        int j = (low-1); //индекс точки раздела
+        for (int i = low; i < high; i++) { //пока не кончаться элементы
+            if(array[i].compareTo(segment) <=0) {  //сравниваем элементы массива
+                j++; // перемещаем точку раздела и размещаем меньшие элементы до него, большие - после
+                Segment swap = array[j];
+                array[j] = array[i];
+                array[i] = swap;
+            }
+        }
+        Segment swap = array[j+1];
+        array[j+1] = array[high];
+        array[high] = swap;
+
+        int[] result = new int[2];
+
+        int right = j;
+
+        for(; low < high; low++) {
+            if(array[low].compareTo(segment) == 0) {
+                right++;
+                swap = array[j];
+                array[j] = array[right];
+                array[right] = swap;
+            }
+        }
+
+        result[0] = j;
+        result[1] = right;
+
         return result;
     }
 
