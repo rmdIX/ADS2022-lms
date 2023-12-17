@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /*
 Задача на программирование: наибольшая возрастающая подпоследовательность
@@ -44,7 +45,30 @@ public class A_LIS {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
+
+        int[] array = new int[n];
+        // создаем новый массив, где будет происходить подсчет кол-ва элементов наибольшей последовательности(динамики)
+        Arrays.fill(array,1); // заполним его единицами т.к. размер наименьшей последовательности
+
+        for (int i = 1; i<n; i++){ //цикл
+            for(int j = 0; j < i; j++){
+                if(m[j] < m[i] &&  array[j] + 1 > array[i]){
+                    // если I-тое число больше j-того и j-тая последовательность +1 больше i-той
+                    array[i] = array[j] +1;// увеличиваем последовательность
+                }
+            }
+        }
         int result = 0;
+
+        for (int i = 0; i<n; i++){
+            if(result < array[i]){ // находим наибольшую последовательность
+                result = array[i];
+            }
+        }
+
+
+
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

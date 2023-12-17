@@ -3,6 +3,7 @@ package by.it.group251051.kozlovski.lesson06;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -38,6 +39,8 @@ import java.util.Scanner;
 
 public class C_LongNotUpSubSeq {
 
+    static int[] Result_array;
+
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -50,7 +53,41 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
+        int[] array = new int[n];
+        // создаем новый массив, где будет происходить подсчет кол-ва элементов наибольшей последовательности(динамики)
+        Arrays.fill(array,1); // заполним его единицами т.к. размер наименьшей последовательности
+
+        int[] max_index = new int[n];
+        // создаем массив в котором будет храниться в каком месте достигается максимум для каждого значения в array
+        Arrays.fill(max_index, -1);
+
+        for (int i = 1; i<n; i++){ //цикл
+            for(int j = 0; j < i; j++){
+                if(m[j] >= m[i] &&  array[j] + 1 > array[i]){
+                    // если I-тое число меньше либо равно j-того и j-тая последовательность +1 больше i-той
+                    array[i] = array[j] +1;// увеличиваем последовательность
+                    max_index[i] = j; // записываем, где она увеличилась;
+                }
+            }
+        }
         int result = 0;
+        int max = 0;
+
+        for (int i = 0; i<n; i++){
+            if(result < array[i]){ // находим наибольшую последовательность
+                result = array[i];
+                max = i; //запоминаем индекс максимальной последовательности
+            }
+        }
+
+        Result_array = new int[result]; //массив самой последовательности
+        int j = result-1;
+
+            while(max >-1){ //записываем в массив
+                Result_array[j] = max+1;
+                max = max_index[max];
+                j--;
+            }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -63,7 +100,10 @@ public class C_LongNotUpSubSeq {
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson06/dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
-        System.out.print(result);
+        System.out.println(result);
+        for(int i = 0; i < Result_array.length; i++){
+            System.out.print(Result_array[i] + " ");
+        }
     }
 
 }
