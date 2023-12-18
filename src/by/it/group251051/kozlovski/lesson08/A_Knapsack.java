@@ -46,10 +46,17 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[] d = new int[w+1]; //максимальная стоимость любого количества вещей
+        for(int i = 1; i <=w; i++){
+            for(int j = 0; j < n; j++){
+                if(gold[j] <= i){
+                    d[i] =Math.max(d[i], gold[j] + d[i - gold[j]]);
+                }
+            }
+        }
 
-        int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return d[w];
     }
 
 

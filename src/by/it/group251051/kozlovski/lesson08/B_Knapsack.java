@@ -38,10 +38,27 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[][] K = new int[w+1][n+1];// поскольку нам нужно учитывать что мы уже взяли, добавим еще один параметр
 
-        int result = 0;
+        for(int i = 0; i <=w; i++){
+            K[i][0] = 0;
+        }
+
+        for(int i = 0; i <=n; i++){
+            K[0][i] = 0;
+        }
+
+        for(int i = 1; i<=n; i++){
+            for (int j = 1; j<=w; j++){
+                K[j][i] = K[j][i-1];
+                if(gold[i-1] <= j){
+                    K[j][i] = Math.max(K[j][i], K[j - gold[i - 1]][i - 1] + gold[i - 1]);
+                }
+            }
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return K[w][n];
     }
 
 
