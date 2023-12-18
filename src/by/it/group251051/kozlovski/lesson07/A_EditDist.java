@@ -3,6 +3,7 @@ package by.it.group251051.kozlovski.lesson07;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -44,9 +45,35 @@ public class A_EditDist {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-        int result = 0;
+        int result = Calculate(one,two);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+
+    static int Calculate( String one, String two){ // функция расчета расстояния Левенштейна
+
+        if(one.isEmpty()){//если одна из строк пуста, то расстояние равно длине не пустой строчки
+            return two.length();
+        }
+
+        if(two.isEmpty()){
+            return one.length();
+        }
+        //три возможные опции изменения одного символа в другой
+        int sub = Calculate(one.substring(1),two.substring(1))
+                + Cost_of_sub(one.charAt(0), two.charAt(0));
+        int ins = Calculate(one,two.substring(1)) + 1;
+        int del = Calculate(one.substring(1),two) + 1;
+        return Min(sub,ins,del);
+    }
+
+    public static int Cost_of_sub(char a, char b){ //цена замены одного символа на другой
+        return a==b ? 0 : 1;
+    }
+
+    public static int Min(int a, int b, int c){ //выберем опцию, которая дает минимальное количество затраченных шагов
+        return Integer.min(a, Integer.min(b,c));
     }
 
 

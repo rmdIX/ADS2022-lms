@@ -52,10 +52,57 @@ public class C_EditDist {
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int[][] matr = new int[one.length()+1][two.length()+1]; // создаем матрицу в которую будем записывать шаги
 
-        String result = "";
+        for(int i = 0; i <= one.length(); i++){
+            for (int j =0; j<= two.length(); j++){
+                if(i == 0){
+                    matr[i][j] = j;
+
+                } else if (j == 0) {
+                    matr[i][j] = i;
+
+                } else {
+                    matr[i][j] = Integer.min(matr[i-1][j-1] + Cost_of_sub(one.charAt(i-1),two.charAt(j-1)),
+                            Integer.min(matr[i-1][j]+1,matr[i][j-1]+1));
+                    // выбираем действие, которое затрачивает наименьшее кол-во шагов
+                }
+            }
+        }
+
+        int i =  one.length();
+        int j = two.length();
+
+        StringBuilder result = new StringBuilder(); // создаем строку в которую будем записывать результат
+
+        while (i != 0 || j  != 0 ){ // пока не закончиться матрица
+            if (i > 0 && j > 0 && matr[i -1][j-1] + (one.charAt(i-1) == two.charAt(j-1) ? 0:1) == matr[i][j]){
+                // и индексы стоят на ячейке с наименьшим шагом
+                if (one.charAt(i-1) == two.charAt(j -1)){ // если символы соответствуют друг другу
+                    result.insert(0, "#,"); // это копирование
+
+                } else {
+                    result.insert(0,"~" + two.charAt(j-1)+ ","); // иначе замена
+
+                }
+                i--;
+                j--;
+
+            } else if (j>0 && matr[i][j] == matr[i][j-1]+1) { // иначе если число в ячейке матрицы увеличилось
+                result.insert(0,"+" + two.charAt(j-1)+ ","); // значит это вставка + символ
+                j--;
+
+            } else if (i >  0 && matr[i][j] == matr[i - 1][j]+1) { // иначе если число в ячейке матрицы уменьшилось
+                result.insert(0,"-" + one.charAt(i -1) + ","); // значит это удаление - символ
+                i--;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result.toString(); // возвращаем строку с обозначениями каждого шага
+    }
+
+    public static int Cost_of_sub(char a, char b){  //цена замены одного символа на другой
+        return a==b ? 0 : 1;
     }
 
 

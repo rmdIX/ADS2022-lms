@@ -40,16 +40,34 @@ import java.util.Scanner;
 public class B_EditDist {
 
 
-    int getDistanceEdinting(String one, String two) {
+    int getDistanceEdinting(String one, String two) { // функция нахождения расстояния Левенштейна
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int[][] matr = new int[one.length()+1][two.length()+1]; // создаем матрицу в которую будем записывать шаги
 
+        for(int i = 0; i <= one.length(); i++){
+            for (int j =0; j<= two.length(); j++){
+                if(i == 0){
+                    matr[i][j] = j;
 
-        int result = 0;
+                } else if (j == 0) {
+                    matr[i][j] = i;
+
+                } else {
+                    matr[i][j] = Integer.min(matr[i-1][j-1] + Cost_of_sub(one.charAt(i-1),two.charAt(j-1)),
+                            Integer.min(matr[i-1][j]+1,matr[i][j-1]+1));
+                    // выбираем действие, которое затрачивает наименьшее кол-во шагов
+                }
+            }
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return matr[one.length()][two.length()]; // возвращаем последний элемент матрицы
     }
 
+    public static int Cost_of_sub(char a, char b){  //цена замены одного символа на другой
+        return a==b ? 0 : 1;
+    }
 
 
     public static void main(String[] args) throws FileNotFoundException {
