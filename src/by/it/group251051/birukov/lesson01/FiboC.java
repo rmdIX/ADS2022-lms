@@ -6,6 +6,8 @@ package by.it.group251051.birukov.lesson01;
  * время расчета должно быть не более 2 секунд
  */
 
+import java.math.BigInteger;
+
 public class FiboC {
 
     private long startTime = System.currentTimeMillis();
@@ -25,7 +27,17 @@ public class FiboC {
         //Решение сложно найти интуитивно
         //возможно потребуется дополнительный поиск информации
         //см. период Пизано
-        return 0L;
+
+        int[] mas = new int[3];
+        mas[1]= 1;
+        for (int i=2; i<=n; i++) {
+            mas[2] = mas[1]+mas[0];
+            mas[0] = mas[1];
+            mas[1] = mas[2];
+        }
+        int f = mas[2], d;
+        d = f-f/m*m;
+        return d;
     }
 
 
