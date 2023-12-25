@@ -14,7 +14,7 @@ public class Lesson1Test {
      * Name: Test cherniak
      * Test kind: All in package
      * Package: by.it.group251051.cherniak.lesson01;
-     * Search for test: In whole project
+     * Search for test: In whole projects
      */
 
     @Test(timeout = 2000)
