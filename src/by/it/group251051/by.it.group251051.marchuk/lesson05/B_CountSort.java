@@ -32,7 +32,16 @@ public class B_CountSort {
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
-
+        int temp_array[] = new int [10];
+        for (int i = 0; i < n; i++){
+            temp_array[points[i] - 1]++;
+        }
+        int j = 0;
+        for (int i = 0; i < 10; i++){
+            while (temp_array[i]-- != 0) {
+                points[j++] = i + 1;
+            }
+        }
 
 
 
