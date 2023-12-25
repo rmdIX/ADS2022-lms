@@ -48,7 +48,8 @@ public class C_GetInversions {
         }
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
+        int[] temp = new int[n];
+        result = mergeSort(a, temp, 0, n - 1);
 
 
 
@@ -59,6 +60,44 @@ public class C_GetInversions {
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+    private int mergeSort(int[] a, int[] temp, int left, int right) {
+        int mid, invCount = 0;
+        if (right > left) {
+            mid = (right + left) / 2;
+            invCount = mergeSort(a, temp, left, mid);
+            invCount += mergeSort(a, temp, mid + 1, right);
+            invCount += merge(a, temp, left, mid + 1, right);
+        }
+        return invCount;
+    }
+
+    private int merge(int[] a, int[] temp, int left, int mid, int right) {
+        int i = left, j = mid, k = left;
+        int invCount = 0;
+
+        while ((i <= mid - 1) && (j <= right)) {
+            if (a[i] <= a[j]) {
+                temp[k++] = a[i++];
+            } else {
+                temp[k++] = a[j++];
+                invCount += (mid - i);
+            }
+        }
+
+        while (i <= mid - 1) {
+            temp[k++] = a[i++];
+        }
+
+        while (j <= right) {
+            temp[k++] = a[j++];
+        }
+
+        for (i = left; i <= right; i++) {
+            a[i] = temp[i];
+        }
+
+        return invCount;
     }
 
 
